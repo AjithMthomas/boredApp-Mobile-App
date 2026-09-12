@@ -46,31 +46,16 @@ class _SplashScreenState extends State<SplashScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Brand mark — aurora tile with glow, pulsing gently
-                  Container(
-                    width: 92,
-                    height: 92,
-                    decoration: BoxDecoration(
-                      gradient: AppColors.aurora,
-                      borderRadius: BorderRadius.circular(28),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.auroraMint.withValues(alpha: 0.45),
-                          blurRadius: 48,
-                          offset: const Offset(0, 16),
-                        ),
-                      ],
-                    ),
-                    child: const Icon(
-                      Icons.hourglass_top_rounded,
-                      size: 44,
-                      color: Colors.white,
-                    ),
+                  // Brand mark — logo with text on splash loading screen
+                  Image.asset(
+                    'assets/logo.png',
+                    height: 110,
+                    fit: BoxFit.contain,
                   )
                       .animate(onPlay: (c) => c.repeat(reverse: true))
                       .scale(
                         begin: const Offset(1, 1),
-                        end: const Offset(1.06, 1.06),
+                        end: const Offset(1.05, 1.05),
                         duration: 1400.ms,
                         curve: Curves.easeInOut,
                       )
@@ -81,19 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         duration: 600.ms,
                         curve: Curves.elasticOut,
                       ),
-                  const SizedBox(height: 24),
-                  const Text(
-                    'TIME~NEED',
-                    style: TextStyle(
-                      fontSize: 27,
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 5,
-                      color: Colors.white,
-                    ),
-                  )
-                      .animate(delay: 250.ms)
-                      .fadeIn(duration: 500.ms)
-                      .slideY(begin: 0.4, end: 0, curve: Curves.easeOutCubic),
+                  const SizedBox(height: 16),
                   const SizedBox(height: 10),
                   Text(
                     'Time for needs. Needs for time.',

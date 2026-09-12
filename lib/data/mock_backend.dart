@@ -94,6 +94,26 @@ Member _member(
 /// Madiwala seed feed — every post type and exchange mode represented.
 final List<Task> kSeedTasks = [
   _task(
+    id: 't0',
+    creator: kSeedMembers[1],
+    type: PostType.offer,
+    title: "I'm free for 1 hour. Anyone need help/company?",
+    desc:
+        'Got an hour to spare in Madiwala before my evening study shift. Happy to help with quick errands, grab coffee, walk, or chat!',
+    category: 'Company',
+    inHours: 1,
+    minutes: 60,
+    area: 'Madiwala · 4th Block',
+    km: 0.3,
+    exchange: ExchangeMode.free,
+    amount: 0,
+    capacity: 2,
+    applicants: 4,
+    risk: TaskRisk.low,
+    meeting: 'Public cafe / library',
+    checkin: false,
+  ),
+  _task(
     id: 't1',
     creator: kSeedMembers[0],
     type: PostType.task,
@@ -385,7 +405,7 @@ class MockBackend extends ChangeNotifier {
   final List<MockNotification> notifications = [
     MockNotification(
       id: _Ids.next('n'),
-      title: 'Welcome to TIME~NEED',
+      title: 'Welcome to nuvra',
       body: 'Your Madiwala feed is live. Start with a tea walk?',
       createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
       read: true,
@@ -467,6 +487,7 @@ class MockBackend extends ChangeNotifier {
     required Gender gender,
     required String bio,
     required List<String> categories,
+    String? photoUrl,
   }) {
     signupName = name;
     signupBio = bio;
@@ -479,7 +500,7 @@ class MockBackend extends ChangeNotifier {
       id: m.id,
       publicName: name,
       email: m.email,
-      photoUrl: m.photoUrl,
+      photoUrl: photoUrl ?? m.photoUrl,
       gender: gender,
       bio: bio,
       completedCount: m.completedCount,
@@ -506,6 +527,19 @@ class MockBackend extends ChangeNotifier {
   void signOut() {
     signedIn = false;
     notifyListeners();
+  }
+
+  /// DEBUG HELPER: seeds a fully signed-in session so automated previews
+  /// can open /home directly (past the auth + onboarding chain).
+  void debugSeedSignedIn() {
+    requestOtp('demo@timeneed.app');
+    verifyOtp(pendingOtp!);
+    completeSignupProfile(
+      name: 'Arjun Mehta',
+      gender: Gender.male,
+      bio: 'New in Madiwala. Happy to help with errands and tea walks.',
+      categories: const ['Errands', 'Company', 'Sports'],
+    );
   }
 
   // ── Feed & filters ───────────────────────────────────────────────

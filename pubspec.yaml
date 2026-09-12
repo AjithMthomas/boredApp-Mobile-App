@@ -1,5 +1,5 @@
 name: time_need
-description: "TIME~NEED — a safety-first marketplace connecting people who have a need with people who have time. Madiwala pilot."
+description: "nuvra — a safety-first marketplace connecting people who have a need with people who have time. Madiwala pilot."
 publish_to: 'none'
 version: 0.2.0
 
@@ -25,4 +25,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - assets/
     - assets/ads/
+    - assets/avatars/

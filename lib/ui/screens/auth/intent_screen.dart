@@ -41,6 +41,16 @@ class _IntentScreenState extends ConsumerState<IntentScreen> {
         child: ListView(
           padding: const EdgeInsets.all(AppDimens.xl),
           children: [
+            Row(
+              children: [
+                Image.asset(
+                  'assets/logo_icon.png',
+                  height: 44,
+                  fit: BoxFit.contain,
+                ),
+              ],
+            ),
+            const SizedBox(height: AppDimens.lg),
             const Text(
               'What do you want to do here?',
               style: TextStyle(fontSize: 26, fontWeight: FontWeight.w900, height: 1.2),

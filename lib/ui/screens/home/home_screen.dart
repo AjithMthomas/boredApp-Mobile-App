@@ -56,14 +56,20 @@ class HomeScreen extends ConsumerWidget {
             child: ListView(
               padding: const EdgeInsets.only(bottom: 110),
               children: [
-                // ── Header: points pill + avatar + actions ──────────
+                // ── Header: Brand logo + points pill + avatar + actions ──────────
                 Padding(
                   padding: const EdgeInsets.all(AppDimens.lg),
                   child: Row(
                     children: [
+                      Image.asset(
+                        'assets/logo_icon.png',
+                        height: 42,
+                        fit: BoxFit.contain,
+                      ),
+                      const SizedBox(width: AppDimens.sm),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 7),
+                            horizontal: 10, vertical: 5),
                         decoration: BoxDecoration(
                           color: AppColors.surface,
                           borderRadius:
@@ -80,13 +86,13 @@ class HomeScreen extends ConsumerWidget {
                         child: const Row(
                           children: [
                             Icon(Icons.local_fire_department_rounded,
-                                size: 16, color: AppColors.auroraCoral),
-                            SizedBox(width: 5),
+                                size: 15, color: AppColors.auroraCoral),
+                            SizedBox(width: 4),
                             Text(
                               '320 pts',
                               style: TextStyle(
                                 fontWeight: FontWeight.w900,
-                                fontSize: 13,
+                                fontSize: 12,
                               ),
                             ),
                           ],

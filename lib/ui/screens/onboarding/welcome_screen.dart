@@ -28,7 +28,16 @@ class WelcomeScreen extends StatelessWidget {
           child: ListView(
             padding: const EdgeInsets.all(AppDimens.xl),
             children: [
-              const SizedBox(height: AppDimens.lg),
+              Row(
+                children: [
+                  Image.asset(
+                    'assets/logo_icon.png',
+                    height: 44,
+                    fit: BoxFit.contain,
+                  ),
+                ],
+              ),
+              const SizedBox(height: AppDimens.md),
               // Celebration ring
               Center(
                 child: Container(

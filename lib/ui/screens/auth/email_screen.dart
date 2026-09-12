@@ -73,26 +73,12 @@ class _EmailScreenState extends ConsumerState<EmailScreen> {
               children: [
                 // ── Top: brand mark + step dots ─────────────────────
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      width: 34,
-                      height: 34,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: AppColors.aurora,
-                      ),
-                      child: const Icon(Icons.bolt_rounded,
-                          color: Colors.white, size: 19),
-                    ),
-                    const SizedBox(width: 8),
-                    const Text(
-                      'TIME~NEED',
-                      style: TextStyle(
-                        fontSize: 12.5,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 1.6,
-                        color: AppColors.textSecondary,
-                      ),
+                    Image.asset(
+                      'assets/logo_icon.png',
+                      height: 44,
+                      fit: BoxFit.contain,
                     ),
                     const Spacer(),
                     const StepDots(current: 0, total: 3),

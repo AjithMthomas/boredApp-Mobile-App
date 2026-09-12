@@ -73,17 +73,28 @@ class GradientAvatar extends StatelessWidget {
 
     Widget inner;
     if (_hasPhoto) {
-      inner = ClipOval(
-        child: CachedNetworkImage(
-          imageUrl: photoUrl!,
-          width: size,
-          height: size,
-          fit: BoxFit.cover,
-          fadeInDuration: const Duration(milliseconds: 250),
-          placeholder: (_, _) => _fallback(),
-          errorWidget: (_, _, _) => _fallback(),
-        ),
-      );
+      if (photoUrl!.startsWith('assets/')) {
+        inner = ClipOval(
+          child: Image.asset(
+            photoUrl!,
+            width: size,
+            height: size,
+            fit: BoxFit.cover,
+          ),
+        );
+      } else {
+        inner = ClipOval(
+          child: CachedNetworkImage(
+            imageUrl: photoUrl!,
+            width: size,
+            height: size,
+            fit: BoxFit.cover,
+            fadeInDuration: const Duration(milliseconds: 250),
+            placeholder: (_, _) => _fallback(),
+            errorWidget: (_, _, _) => _fallback(),
+          ),
+        );
+      }
     } else {
       inner = _fallback();
     }

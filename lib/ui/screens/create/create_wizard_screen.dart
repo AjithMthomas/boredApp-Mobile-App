@@ -213,14 +213,14 @@ class _CreateWizardScreenState extends ConsumerState<CreateWizardScreen> {
           ),
         ),
         const SizedBox(height: AppDimens.md),
-          _SectionLabel(title: 'Category', note: null).animate(delay: 200.ms).fadeIn(),
+          _sectionLabel(title: 'Category', note: null).animate(delay: 200.ms).fadeIn(),
           const SizedBox(height: AppDimens.sm),
           Wrap(
             spacing: AppDimens.sm,
             runSpacing: AppDimens.sm,
             children: b.categories
                 .where((c) => c != 'All')
-                .map((c) => _SelectPill(
+                .map((c) => _selectPill(
                       label: c,
                       selected: _draft.category == c,
                       onTap: () => setState(() => _draft.category = c),
@@ -228,12 +228,12 @@ class _CreateWizardScreenState extends ConsumerState<CreateWizardScreen> {
                 .toList(),
           ),
           const SizedBox(height: AppDimens.md),
-          _SectionLabel(title: 'When', note: 'Pick when & how long the activity runs.').animate(delay: 260.ms).fadeIn(),
+          _sectionLabel(title: 'When', note: 'Pick when & how long the activity runs.').animate(delay: 260.ms).fadeIn(),
           const SizedBox(height: AppDimens.sm),
           Row(
             children: [
               Expanded(
-                child: _DateTimeChip(
+                child: _dateTimeChip(
                   label: 'When',
                   icon: Icons.event_rounded,
                   value: DateFormat('d MMM, h:mm a').format(_draft.scheduledAt),
@@ -263,7 +263,7 @@ class _CreateWizardScreenState extends ConsumerState<CreateWizardScreen> {
               ),
               const SizedBox(width: AppDimens.sm),
               Expanded(
-                child: _DateTimeChip(
+                child: _dateTimeChip(
                   label: 'Duration',
                   icon: Icons.timer_outlined,
                   value:
@@ -286,7 +286,7 @@ class _CreateWizardScreenState extends ConsumerState<CreateWizardScreen> {
             ],
           ),
           const SizedBox(height: AppDimens.md),
-          _SectionLabel(
+          _sectionLabel(
             title: 'Where',
             note: 'Area only — never exact addresses here.',
           ).animate(delay: 320.ms).fadeIn(),
@@ -301,7 +301,7 @@ class _CreateWizardScreenState extends ConsumerState<CreateWizardScreen> {
             ),
           ),
           const SizedBox(height: AppDimens.md),
-          _SectionLabel(
+          _sectionLabel(
             title: 'People needed',
             note: 'How many can join this activity.',
           ).animate(delay: 380.ms).fadeIn(),
@@ -311,7 +311,7 @@ class _CreateWizardScreenState extends ConsumerState<CreateWizardScreen> {
             runSpacing: AppDimens.sm,
             children: [1, 2, 3, 4, 6].map((n) {
               final on = _draft.capacity == n;
-              return _SelectPill(
+              return _selectPill(
                 label: '$n (${n == 1 ? 'person' : 'people'})',
                 selected: on,
                 onTap: () => setState(() => _draft.capacity = n),
@@ -319,7 +319,7 @@ class _CreateWizardScreenState extends ConsumerState<CreateWizardScreen> {
             }).toList(),
           ),
           const SizedBox(height: AppDimens.md),
-          _SectionLabel(
+          _sectionLabel(
             title: 'Who can join?',
             note: 'Safety first — many members prefer same-gender company for travel, nights out or home visits.',
           ).animate(delay: 440.ms).fadeIn(),
@@ -329,7 +329,7 @@ class _CreateWizardScreenState extends ConsumerState<CreateWizardScreen> {
             runSpacing: AppDimens.sm,
             children: GenderPreference.values.map((g) {
               final on = _draft.genderPreference == g;
-              return _SelectPill(
+              return _selectPill(
                 label: g.label,
                 icon: g.icon,
                 selected: on,
@@ -540,7 +540,7 @@ class _CreateWizardScreenState extends ConsumerState<CreateWizardScreen> {
   }
 
   /// Minimal section label used across wizard steps.
-  Widget _SectionLabel({required String title, String? note}) {
+  Widget _sectionLabel({required String title, String? note}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -569,7 +569,7 @@ class _CreateWizardScreenState extends ConsumerState<CreateWizardScreen> {
   }
 
   /// Single-select pill with optional icon, consistent across steps.
-  Widget _SelectPill({
+  Widget _selectPill({
     required String label,
     required bool selected,
     required VoidCallback onTap,
@@ -629,7 +629,7 @@ class _CreateWizardScreenState extends ConsumerState<CreateWizardScreen> {
   }
 
   /// Outlined pill with a live value + setter (date/time, duration).
-  Widget _DateTimeChip({
+  Widget _dateTimeChip({
     required String label,
     required IconData icon,
     required String value,

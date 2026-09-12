@@ -112,12 +112,19 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
               padding: const EdgeInsets.fromLTRB(
                   AppDimens.xl, AppDimens.lg, AppDimens.xl, AppDimens.xl),
               children: [
-                // ── Top: back + step dots ───────────────────────────
+                // ── Top: back + brand icon + step dots ───────────────
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     _RoundIconBtn(
                       icon: Icons.arrow_back_rounded,
                       onTap: () => context.pop(),
+                    ),
+                    const SizedBox(width: AppDimens.sm),
+                    Image.asset(
+                      'assets/logo_icon.png',
+                      height: 44,
+                      fit: BoxFit.contain,
                     ),
                     const Spacer(),
                     const StepDots(current: 1, total: 3),

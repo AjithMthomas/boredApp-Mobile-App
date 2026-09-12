@@ -26,6 +26,21 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
   Gender? _gender;
   final Set<String> _categories = {};
 
+  String? _selectedAvatar = 'assets/avatars/1.jpg';
+
+  static const _avatars = [
+    'assets/avatars/1.jpg',
+    'assets/avatars/2.jpg',
+    'assets/avatars/3.jpg',
+    'assets/avatars/4.jpg',
+    'assets/avatars/5.jpg',
+    'assets/avatars/6.jpg',
+    'assets/avatars/7.jpg',
+    'assets/avatars/8.jpg',
+    'assets/avatars/9.jpg',
+    'assets/avatars/10.jpg',
+  ];
+
   static const _allCategories = [
     ('Errands', Icons.directions_run_rounded),
     ('Company', Icons.group_rounded),
@@ -47,6 +62,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
           gender: _gender!,
           bio: _bioCtrl.text.trim(),
           categories: _categories.toList(),
+          photoUrl: _selectedAvatar,
         );
     context.go('/welcome');
   }
@@ -81,12 +97,19 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
               padding: const EdgeInsets.fromLTRB(
                   AppDimens.xl, AppDimens.lg, AppDimens.xl, AppDimens.xl),
               children: [
-                // ── Top: back + step dots ───────────────────────────
+                // ── Top: back + brand icon + step dots ───────────────
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     _RoundIconBtn(
                       icon: Icons.arrow_back_rounded,
                       onTap: () => context.pop(),
+                    ),
+                    const SizedBox(width: AppDimens.sm),
+                    Image.asset(
+                      'assets/logo_icon.png',
+                      height: 44,
+                      fit: BoxFit.contain,
                     ),
                     const Spacer(),
                     const StepDots(current: 2, total: 3),
@@ -121,7 +144,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                 ).animate(delay: 140.ms).fadeIn(duration: 400.ms),
                 const SizedBox(height: AppDimens.xl),
 
-                // ── Live identity preview ───────────────────────────
+                // ── Live identity preview + Avatar Selection ─────────
                 Center(
                   child: Column(
                     children: [
@@ -129,6 +152,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                         name: _nameCtrl.text.trim().isEmpty
                             ? 'You'
                             : _nameCtrl.text.trim(),
+                        photoUrl: _selectedAvatar,
                         size: 88,
                       ).animate().scale(
                             begin: const Offset(0.6, 0.6),
@@ -136,31 +160,71 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                             duration: 600.ms,
                             curve: Curves.elasticOut,
                           ),
+                      const SizedBox(height: 16),
+                      const Text(
+                        'Choose an Avatar',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
                       const SizedBox(height: 10),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 5),
-                        decoration: BoxDecoration(
-                          color: AppColors.surface,
-                          borderRadius:
-                              BorderRadius.circular(AppDimens.rPill),
-                          border: Border.all(color: AppColors.stroke),
+                      SizedBox(
+                        height: 60,
+                        child: ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: _avatars.length,
+                          separatorBuilder: (_, _) =>
+                              const SizedBox(width: 10),
+                          itemBuilder: (context, index) {
+                            final path = _avatars[index];
+                            final isSelected = _selectedAvatar == path;
+                            return GestureDetector(
+                              onTap: () {
+                                Haptics.select();
+                                setState(() {
+                                  _selectedAvatar = path;
+                                });
+                              },
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 200),
+                                width: 54,
+                                height: 54,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: isSelected
+                                        ? AppColors.coral
+                                        : Colors.transparent,
+                                    width: 3,
+                                  ),
+                                  boxShadow: isSelected
+                                      ? [
+                                          BoxShadow(
+                                            color: AppColors.coral
+                                                .withValues(alpha: 0.35),
+                                            blurRadius: 10,
+                                            offset: const Offset(0, 3),
+                                          ),
+                                        ]
+                                      : null,
+                                ),
+                                child: ClipOval(
+                                  child: Image.asset(path, fit: BoxFit.cover),
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                        child: const Text(
-                          'Your gradient signature builds as you type',
-                          style: TextStyle(
-                            fontSize: 11,
-                            color: AppColors.textFaint,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ).animate(delay: 200.ms).fadeIn(),
+                      ),
                     ],
                   ),
                 ),
                 const SizedBox(height: AppDimens.xl),
 
-                // ── Fields — elevated, borderless ───────────────────
+                // ── Fields — elevated & neat ──────────────────────
                 _ElevatedField(
                   controller: _nameCtrl,
                   hint: 'Public name (e.g. Ayesha K.)',
@@ -179,7 +243,8 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                   hint: 'One line about you (optional)',
                   icon: Icons.notes_rounded,
                   maxLength: 140,
-                  maxLines: 2,
+                  maxLines: 1,
+                  onChanged: (_) => setState(() {}),
                 ).animate(delay: 320.ms).fadeIn().slideY(
                       begin: 0.15,
                       end: 0,
@@ -448,60 +513,53 @@ class _ElevatedField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            color: AppColors.surface,
-            borderRadius: BorderRadius.circular(AppDimens.rField + 2),
-            boxShadow: const [
-              BoxShadow(
-                color: Color(0x12101323),
-                blurRadius: 16,
-                offset: Offset(0, 6),
-              ),
-            ],
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppDimens.rField + 4),
+        border: Border.all(color: AppColors.stroke),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x0C101323),
+            blurRadius: 14,
+            offset: Offset(0, 4),
           ),
-          child: TextField(
-            controller: controller,
-            maxLength: maxLength,
-            maxLines: maxLines,
-            onChanged: onChanged,
-            style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w700,
-            ),
-            decoration: InputDecoration(
-              hintText: hint,
-              prefixIcon: Icon(icon, size: 20, color: AppColors.textFaint),
-              counterText: '',
-              filled: true,
-              fillColor: AppColors.surface,
-              contentPadding: const EdgeInsets.symmetric(vertical: 16),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppDimens.rField + 2),
-                borderSide: BorderSide.none,
-              ),
-            ),
+        ],
+      ),
+      child: TextField(
+        controller: controller,
+        maxLength: maxLength,
+        maxLines: maxLines,
+        onChanged: onChanged,
+        style: const TextStyle(
+          fontSize: 14.5,
+          fontWeight: FontWeight.w700,
+          color: AppColors.ink,
+        ),
+        decoration: InputDecoration(
+          hintText: hint,
+          hintStyle: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: AppColors.textFaint,
+          ),
+          prefixIcon: Padding(
+            padding: const EdgeInsets.only(left: 16, right: 12),
+            child: Icon(icon, size: 20, color: AppColors.textSecondary),
+          ),
+          prefixIconConstraints:
+              const BoxConstraints(minWidth: 48, minHeight: 48),
+          counterText: '',
+          filled: true,
+          fillColor: Colors.transparent,
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(AppDimens.rField + 4),
+            borderSide: BorderSide.none,
           ),
         ),
-        if (maxLines == 1 || maxLength <= 30)
-          Padding(
-            padding: const EdgeInsets.only(top: 4, right: 4),
-            child: AnimatedBuilder(
-              animation: controller,
-              builder: (context, _) => Text(
-                '${controller.text.length}/$maxLength',
-                style: const TextStyle(
-                  fontSize: 10.5,
-                  color: AppColors.textFaint,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-          ),
-      ],
+      ),
     );
   }
 }

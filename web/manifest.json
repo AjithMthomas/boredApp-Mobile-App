@@ -1,6 +1,6 @@
 {
-    "name": "time_need",
-    "short_name": "time_need",
+    "name": "nuvra",
+    "short_name": "nuvra",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

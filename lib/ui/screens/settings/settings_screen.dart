@@ -165,7 +165,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           const SizedBox(height: AppDimens.xl),
           const Center(
             child: Text(
-              'TIME~NEED v0.1.0 · Madiwala pilot\nMinimum data · maximum trust',
+              'nuvra v0.1.0 · Madiwala pilot\nMinimum data · maximum trust',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 11,

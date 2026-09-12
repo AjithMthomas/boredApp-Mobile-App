@@ -1,9 +1,9 @@
-# TIME~NEED — Flutter MVP (Madiwala Pilot)
+# nuvra — Flutter MVP (Madiwala Pilot)
 
 Safety-first marketplace connecting people who have a **need** with people who have **time**.
 Tasks · Company · Offers — paid, free, treat, expenses-covered, barter.
 
-Built from the TIME~NEED project blueprint. UI adapted from the travel-app reference
+Built from the nuvra project blueprint. UI adapted from the travel-app reference
 (pale canvas, rounded cards, mint/lavender gradients, ink pill CTAs).
 
 ---
