@@ -18,7 +18,10 @@ class MyApplicationsScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.canvas,
-      appBar: AppBar(title: const Text('My applications')),
+      appBar: AppBar(
+        title: const Text('My applications'),
+        leading: const UniformBackButton(),
+      ),
       body: apps.isEmpty
           ? EmptyState(
               icon: Icons.front_hand_rounded,
@@ -30,7 +33,7 @@ class MyApplicationsScreen extends ConsumerWidget {
                   label: 'Browse tasks',
                   icon: Icons.explore_rounded,
                   expanded: false,
-                  onPressed: () => context.go('/discover'),
+                  onPressed: () => context.push('/discover'),
                 ),
               ],
             )
@@ -120,7 +123,7 @@ class _AppStatusChip extends StatelessWidget {
       ApplicationStatus.chatting =>
         ('IN CHAT', AppColors.infoSoft, AppColors.info),
       ApplicationStatus.selected =>
-        ('SELECTED ✅', AppColors.successSoft, AppColors.success),
+        ('SELECTED', AppColors.successSoft, AppColors.success),
       ApplicationStatus.declined =>
         ('NOT SELECTED', AppColors.dangerSoft, AppColors.danger),
       ApplicationStatus.withdrawn =>

@@ -49,7 +49,10 @@ class _ReportScreenState extends ConsumerState<ReportScreen> {
     if (_sent) {
       return Scaffold(
         backgroundColor: AppColors.canvas,
-        appBar: AppBar(title: const Text('Report sent')),
+        appBar: AppBar(
+          title: const Text('Report sent'),
+          leading: const UniformBackButton(),
+        ),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(AppDimens.xxl),
@@ -99,7 +102,10 @@ class _ReportScreenState extends ConsumerState<ReportScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.canvas,
-      appBar: AppBar(title: const Text('Report')),
+      appBar: AppBar(
+        title: const Text('Report'),
+        leading: const UniformBackButton(),
+      ),
       body: ListView(
         padding: const EdgeInsets.all(AppDimens.xl),
         children: [

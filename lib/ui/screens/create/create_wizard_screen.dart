@@ -78,7 +78,7 @@ class _CreateWizardScreenState extends ConsumerState<CreateWizardScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content:
-              Text('Published after safety check ✅ — visible in Madiwala now.'),
+              Text('Published after safety check — visible in Madiwala now.'),
         ),
       );
       context.go('/home');
@@ -100,7 +100,7 @@ class _CreateWizardScreenState extends ConsumerState<CreateWizardScreen> {
     return Scaffold(
       backgroundColor: AppColors.canvas,
       appBar: AppBar(
-        leading: BackButton(onPressed: _back),
+        leading: UniformBackButton(onTap: _back),
         title: Text('Create · ${_stepTitles[_step]}'),
       ),
       body: SafeArea(

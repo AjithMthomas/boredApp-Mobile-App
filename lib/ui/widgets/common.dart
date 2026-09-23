@@ -12,6 +12,118 @@ export 'glass_card.dart';
 export 'gradient_avatar.dart';
 export 'gradient_button.dart';
 
+/// The ONE back button used on every screen of the app.
+///
+/// A 36×36 squircle (radius 11) with `arrow_back_rounded`, blending into
+/// its area — three variants, chosen by the page's background:
+///  • [UniformBackButton.light]  — white chip + hairline stroke + ink icon
+///    (light canvas pages — the default everywhere)
+///  • [UniformBackButton.dark]   — `#1E293B` chip + white icon (dark
+///    slate pages like the Auctions hub)
+///  • [UniformBackButton.ghost]  — translucent white fill + white icon
+///    (sits ON TOP of colorful heroes/posters without a boxy chip)
+///
+/// Root tab destinations pass [hidden] explicitly — plain stack pages
+/// (even ones opened via `go()`, like /create) always show the button.
+class UniformBackButton extends StatelessWidget {
+  const UniformBackButton.light({super.key, this.onTap, this.hidden = false})
+      : dark = false,
+        ghost = false;
+
+  const UniformBackButton.dark({super.key, this.onTap, this.hidden = false})
+      : dark = true,
+        ghost = false;
+
+  const UniformBackButton.ghost({super.key, this.onTap, this.hidden = false})
+      : dark = false,
+        ghost = true;
+
+  const UniformBackButton({
+    super.key,
+    this.dark = false,
+    this.ghost = false,
+    this.onTap,
+    this.hidden = false,
+  });
+
+  final bool dark;
+
+  /// Translucent style that melts into gradient heroes/posters.
+  final bool ghost;
+
+  /// Optional override — the wizard passes its step-back action here.
+  final VoidCallback? onTap;
+
+  /// Root tabs pass true (there is nothing to pop); every normal page
+  /// leaves it false so the button always shows.
+  final bool hidden;
+
+  @override
+  Widget build(BuildContext context) {
+    if (hidden) return const SizedBox.shrink();
+    return _BackChip(dark: dark, ghost: ghost, onTap: onTap);
+  }
+}
+
+class _BackChip extends StatelessWidget {
+  const _BackChip({required this.dark, required this.ghost, this.onTap});
+
+  final bool dark;
+  final bool ghost;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final Color fill;
+    final Color iconColor;
+    final Border? border;
+    if (ghost) {
+      fill = Colors.white.withValues(alpha: 0.16);
+      iconColor = Colors.white;
+      border = Border.all(color: Colors.white.withValues(alpha: 0.18));
+    } else if (dark) {
+      fill = const Color(0xFF1E293B);
+      iconColor = Colors.white;
+      border = Border.all(color: Colors.white.withValues(alpha: 0.08));
+    } else {
+      fill = AppColors.surface;
+      iconColor = AppColors.textPrimary;
+      border = Border.all(color: const Color(0xFFE2E8F0));
+    }
+
+    return Center(
+      child: Material(
+        color: fill,
+        borderRadius: BorderRadius.circular(11),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(11),
+          onTap: () {
+            if (onTap != null) {
+              onTap!();
+            } else {
+              Navigator.of(context).maybePop();
+            }
+          },
+          child: Container(
+            width: 36,
+            height: 36,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(11),
+              border: border,
+            ),
+            child: Icon(
+              Icons.arrow_back_rounded,
+              size: 18,
+              color: iconColor,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 /// Compat name for the primary CTA — now the aurora gradient pill,
 /// so every legacy callsite gets the new look for free. A [color]
 /// argument maps to a solid-tint gradient of that colour.
@@ -83,13 +195,17 @@ class TintPill extends StatelessWidget {
             Icon(icon, size: small ? 12 : 14, color: fg),
             const SizedBox(width: 4),
           ],
-          Text(
-            label,
-            style: TextStyle(
-              color: fg,
-              fontWeight: FontWeight.w800,
-              fontSize: small ? 11 : 12.5,
-              letterSpacing: 0.1,
+          Flexible(
+            child: Text(
+              label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: fg,
+                fontWeight: FontWeight.w800,
+                fontSize: small ? 11 : 12.5,
+                letterSpacing: 0.1,
+              ),
             ),
           ),
         ],

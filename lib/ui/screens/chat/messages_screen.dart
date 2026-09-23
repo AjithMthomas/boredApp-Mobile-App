@@ -56,7 +56,7 @@ class MessagesScreen extends ConsumerWidget {
                   label: 'Discover tasks',
                   icon: Icons.explore_rounded,
                   expanded: false,
-                  onPressed: () => context.go('/discover'),
+                  onPressed: () => context.push('/discover'),
                 ),
               ],
             )

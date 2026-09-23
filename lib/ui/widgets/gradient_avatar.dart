@@ -36,6 +36,30 @@ class GradientAvatar extends StatelessWidget {
     [Color(0xFF2DD4BF), Color(0xFF34D399)], // teal → emerald
   ];
 
+  /// The 10 bundled avatars — used whenever a member has no photo, so
+  /// cards never show a blank/initials-only face. Assignment is derived
+  /// from the name hash: the same person always gets the same avatar.
+  static const _bundledAvatars = [
+    'assets/avatars/1.jpg',
+    'assets/avatars/2.jpg',
+    'assets/avatars/3.jpg',
+    'assets/avatars/4.jpg',
+    'assets/avatars/5.jpg',
+    'assets/avatars/6.jpg',
+    'assets/avatars/7.jpg',
+    'assets/avatars/8.jpg',
+    'assets/avatars/9.jpg',
+    'assets/avatars/10.jpg',
+  ];
+
+  static String avatarFor(String name) {
+    var hash = 0;
+    for (final code in name.codeUnits) {
+      hash = (hash * 31 + code) & 0x7FFFFFFF;
+    }
+    return _bundledAvatars[hash % _bundledAvatars.length];
+  }
+
   static Gradient gradientFor(String name) {
     var hash = 0;
     for (final code in name.codeUnits) {
@@ -139,19 +163,28 @@ class GradientAvatar extends StatelessWidget {
   }
 
   Widget _fallback() {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: gradient ?? gradientFor(name),
-        shape: BoxShape.circle,
-      ),
-      alignment: Alignment.center,
-      child: Text(
-        _initials,
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: size * 0.38,
-          fontWeight: FontWeight.w800,
-          letterSpacing: 0.5,
+    // Real bundled avatar face, deterministic per member — never blank.
+    return ClipOval(
+      child: Image.asset(
+        avatarFor(name),
+        width: size,
+        height: size,
+        fit: BoxFit.cover,
+        errorBuilder: (_, _, _) => Container(
+          decoration: BoxDecoration(
+            gradient: gradient ?? gradientFor(name),
+            shape: BoxShape.circle,
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            _initials,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: size * 0.38,
+              fontWeight: FontWeight.w800,
+              letterSpacing: 0.5,
+            ),
+          ),
         ),
       ),
     );

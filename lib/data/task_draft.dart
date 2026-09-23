@@ -4,6 +4,7 @@ import '../core/models/models.dart';
 /// Passed to TaskRepository.create() in Stage 2.
 class TaskDraft {
   PostType type = PostType.task;
+  PostKind kind = PostKind.regular;
   String title = '';
   String description = '';
   String category = 'Errands';
@@ -16,4 +17,7 @@ class TaskDraft {
   GenderPreference genderPreference = GenderPreference.anyone;
   String meetingPreference = 'Public meeting point';
   bool hasCheckin = false;
+
+  /// Vertical-specific note: gig payout terms, room budget, trip destination.
+  String payoutNote = '';
 }

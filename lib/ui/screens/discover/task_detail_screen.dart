@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import '../../../core/models/models.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_dimens.dart';
+import '../../../core/theme/haptics.dart';
 import '../../../state/providers.dart';
 import '../../widgets/common.dart';
 import '../../widgets/task_card.dart';
@@ -97,13 +98,10 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
             expandedHeight: 180,
             backgroundColor: AppColors.canvas,
             surfaceTintColor: Colors.transparent,
-            leadingWidth: 64,
+            leadingWidth: 60,
             leading: Padding(
-              padding: const EdgeInsets.only(left: AppDimens.md),
-              child: _CircleIconButton(
-                icon: Icons.arrow_back_rounded,
-                onTap: () => context.pop(),
-              ),
+              padding: const EdgeInsets.only(left: 8),
+              child: UniformBackButton.ghost(),
             ),
             actions: [
               _CircleIconButton(
@@ -399,7 +397,7 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
                     const SizedBox(height: AppDimens.xl),
                     SectionHeader(
                       title: 'More like this',
-                      onViewAll: () => context.go('/discover'),
+                      onViewAll: () => context.push('/discover'),
                     ),
                     const SizedBox(height: AppDimens.sm),
                     SizedBox(
@@ -575,7 +573,10 @@ class _CircleIconButton extends StatelessWidget {
       child: Material(
         color: Colors.white,
         child: InkWell(
-          onTap: onTap,
+          onTap: () {
+            Haptics.light();
+            onTap();
+          },
           child: SizedBox(
             width: 42,
             height: 42,

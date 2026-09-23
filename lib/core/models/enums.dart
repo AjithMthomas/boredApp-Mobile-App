@@ -7,6 +7,88 @@ import '../theme/app_colors.dart';
 
 enum PostType { task, company, offer }
 
+/// Vertical a post belongs to. `regular` covers the classic
+/// Task / Company / Offer feed; the others are dedicated hubs
+/// (Emergency, Shop Gigs, Room Finder, Make Team, Trips) that still
+/// reuse the Task pipeline — feed, apply, chat, completion.
+enum PostKind { regular, emergency, gig, room, team, trip }
+
+extension PostKindX on PostKind {
+  String get label => switch (this) {
+        PostKind.regular => 'Post',
+        PostKind.emergency => 'SOS',
+        PostKind.gig => 'Gig',
+        PostKind.room => 'Room',
+        PostKind.team => 'Team',
+        PostKind.trip => 'Trip',
+      };
+
+  String get hubTitle => switch (this) {
+        PostKind.regular => 'Feed',
+        PostKind.emergency => 'Emergency Helpers',
+        PostKind.gig => 'Shop Gigs',
+        PostKind.room => 'Room Finder',
+        PostKind.team => 'Make Team',
+        PostKind.trip => 'Community Trips',
+      };
+
+  IconData get icon => switch (this) {
+        PostKind.regular => Icons.forum_rounded,
+        PostKind.emergency => Icons.emergency_share_rounded,
+        PostKind.gig => Icons.storefront_rounded,
+        PostKind.room => Icons.night_shelter_rounded,
+        PostKind.team => Icons.diversity_3_rounded,
+        PostKind.trip => Icons.luggage_rounded,
+      };
+
+  ({Color soft, Color strong}) get colors => switch (this) {
+        PostKind.regular => (soft: AppColors.infoSoft, strong: AppColors.info),
+        PostKind.emergency =>
+          (soft: AppColors.dangerSoft, strong: AppColors.danger),
+        PostKind.gig =>
+          (soft: AppColors.butterSoft, strong: AppColors.auroraAmber),
+        PostKind.room =>
+          (soft: AppColors.lavenderSoft, strong: AppColors.auroraViolet),
+        PostKind.team => (soft: AppColors.mintSoft, strong: AppColors.success),
+        PostKind.trip =>
+          (soft: AppColors.coralSoft, strong: AppColors.auroraCoral),
+      };
+}
+
+/// Post-completion trust badges (Phase 8) — earned from mutual reviews,
+/// never self-declared.
+enum TrustBadge { punctual, friendly, safeHelper, verifiedScout }
+
+extension TrustBadgeX on TrustBadge {
+  String get label => switch (this) {
+        TrustBadge.punctual => 'Punctual',
+        TrustBadge.friendly => 'Friendly',
+        TrustBadge.safeHelper => 'Safe Helper',
+        TrustBadge.verifiedScout => 'Verified Scout',
+      };
+
+  IconData get icon => switch (this) {
+        TrustBadge.punctual => Icons.schedule_rounded,
+        TrustBadge.friendly => Icons.sentiment_satisfied_alt_rounded,
+        TrustBadge.safeHelper => Icons.health_and_safety_rounded,
+        TrustBadge.verifiedScout => Icons.travel_explore_rounded,
+      };
+
+  Color get color => switch (this) {
+        TrustBadge.punctual => AppColors.info,
+        TrustBadge.friendly => AppColors.auroraCoral,
+        TrustBadge.safeHelper => AppColors.success,
+        TrustBadge.verifiedScout => AppColors.auroraViolet,
+      };
+
+  Color get soft => switch (this) {
+        TrustBadge.punctual => AppColors.infoSoft,
+        TrustBadge.friendly => AppColors.coralSoft,
+        TrustBadge.safeHelper => AppColors.successSoft,
+        TrustBadge.verifiedScout => AppColors.lavenderSoft,
+      };
+}
+
 enum ExchangeMode { paid, free, treat, expensesCovered, negotiable, barter }
 
 enum TaskRisk { low, medium, high }

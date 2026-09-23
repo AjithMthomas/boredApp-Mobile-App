@@ -25,7 +25,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.canvas,
-      appBar: AppBar(title: const Text('Settings')),
+      appBar: AppBar(
+        title: const Text('Settings'),
+        leading: const UniformBackButton(),
+      ),
       body: ListView(
         padding: const EdgeInsets.all(AppDimens.lg),
         children: [

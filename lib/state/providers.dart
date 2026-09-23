@@ -16,11 +16,6 @@ class StoreNotifier extends Notifier<StoreState> {
   @override
   StoreState build() {
     final backend = MockBackend();
-    // TEMP DEBUG: opening the app with `debug_signin` in the URL seeds a
-    // signed-in session (used by automated preview testing only).
-    if (Uri.base.toString().contains('debug_signin')) {
-      backend.debugSeedSignedIn();
-    }
     var rev = 0;
     backend.addListener(() {
       rev += 1;

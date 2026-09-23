@@ -116,10 +116,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    _RoundIconBtn(
-                      icon: Icons.arrow_back_rounded,
-                      onTap: () => context.pop(),
-                    ),
+                    UniformBackButton(onTap: () => context.pop()),
                     const SizedBox(width: AppDimens.sm),
                     Image.asset(
                       'assets/logo_icon.png',
@@ -322,31 +319,5 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
   }
 }
 
-/// Circular elevated icon button (back navigation).
-class _RoundIconBtn extends StatelessWidget {
-  const _RoundIconBtn({required this.icon, required this.onTap});
-
-  final IconData icon;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: AppColors.surface,
-      borderRadius: BorderRadius.circular(14),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(14),
-        onTap: onTap,
-        child: Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: AppColors.stroke),
-          ),
-          child: Icon(icon, size: 20, color: AppColors.textPrimary),
-        ),
-      ),
-    );
-  }
-}
+// Circular elevated icon button — retired: replaced by the shared
+// [UniformBackButton] so every screen shares one back control.

@@ -18,7 +18,10 @@ class MyPostsScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.canvas,
-      appBar: AppBar(title: const Text('My posts')),
+      appBar: AppBar(
+        title: const Text('My posts'),
+        leading: const UniformBackButton(),
+      ),
       body: posts.isEmpty
           ? EmptyState(
               icon: Icons.mark_email_unread_rounded,

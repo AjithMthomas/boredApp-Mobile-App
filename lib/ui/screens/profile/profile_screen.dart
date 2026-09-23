@@ -117,6 +117,156 @@ class ProfileScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: AppDimens.md),
 
+                // ── Karma wallet (Time Credits) ───────────────────
+                Container(
+                  padding: const EdgeInsets.all(AppDimens.lg),
+                  decoration: BoxDecoration(
+                    gradient: AppColors.deepSpace,
+                    borderRadius: BorderRadius.circular(AppDimens.rTile),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.auroraViolet.withValues(alpha: 0.25),
+                        blurRadius: 20,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 46,
+                        height: 46,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(Icons.diamond_rounded,
+                            color: AppColors.auroraMint, size: 24),
+                      ),
+                      const SizedBox(width: AppDimens.lg),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Time Credits',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 14),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              '${me.karma} credits — earn by helping, spend on perks',
+                              style: TextStyle(
+                                  color: Colors.white.withValues(alpha: 0.7),
+                                  fontSize: 11.5,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: AppDimens.md),
+
+                // ── Earned trust badges (Phase 8) ─────────────────
+                SoftCard(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Trust badges',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w800, fontSize: 15)),
+                      const SizedBox(height: AppDimens.md),
+                      if (me.badges.isEmpty)
+                        const Text(
+                          'Complete activities and receive mutual reviews to earn badges like Punctual, Friendly and Safe Helper.',
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: AppColors.textSecondary,
+                              height: 1.45),
+                        )
+                      else
+                        Wrap(
+                          spacing: AppDimens.sm,
+                          runSpacing: AppDimens.sm,
+                          children: TrustBadge.values
+                              .where((b) => me.badges.contains(b))
+                              .map(
+                                (b) => TintPill(
+                                  label: b.label,
+                                  bg: b.soft,
+                                  fg: b.color,
+                                  icon: b.icon,
+                                  small: true,
+                                ),
+                              )
+                              .toList(),
+                        ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: AppDimens.md),
+
+                // ── Emergency roster toggles ─────────────────────
+                SoftCard(
+                  padding: const EdgeInsets.all(AppDimens.sm),
+                  child: Column(
+                    children: [
+                      SwitchListTile(
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 4),
+                        secondary: Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            gradient: AppColors.aurora,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Icon(Icons.access_time_filled_rounded,
+                              color: Colors.white, size: 20),
+                        ),
+                        title: const Text('Available Now',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w800, fontSize: 14)),
+                        subtitle: const Text(
+                            'On the emergency helpers roster',
+                            style: TextStyle(fontSize: 12)),
+                        value: me.availableNow,
+                        activeThumbColor: AppColors.success,
+                        onChanged: (_) => b.toggleAvailableNow(),
+                      ),
+                      const Divider(height: 1),
+                      SwitchListTile(
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 4),
+                        secondary: Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            gradient: AppColors.violetDream,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Icon(Icons.shield_rounded,
+                              color: Colors.white, size: 20),
+                        ),
+                        title: const Text('Guardian Shield',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w800, fontSize: 14)),
+                        subtitle: const Text(
+                            'ID-verified priority responder',
+                            style: TextStyle(fontSize: 12)),
+                        value: me.isGuardian,
+                        activeThumbColor: AppColors.auroraViolet,
+                        onChanged: (_) => b.toggleGuardianShield(),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: AppDimens.md),
+
                 // ── Trust ladder ───────────────────────────────────
                 SoftCard(
                   child: Column(
@@ -175,6 +325,39 @@ class ProfileScreen extends ConsumerWidget {
                         ),
                         trailing: const Icon(Icons.chevron_right_rounded),
                         onTap: () => context.push('/safety'),
+                      ),
+                      const Divider(height: 1),
+                      ListTile(
+                        leading: const Icon(Icons.diamond_rounded),
+                        title: const Text('Play & Earn',
+                            style:
+                                TextStyle(fontWeight: FontWeight.w800)),
+                        subtitle: const Text('Games that bank Time Credits',
+                            style: TextStyle(fontSize: 12)),
+                        trailing: const Icon(Icons.chevron_right_rounded),
+                        onTap: () => context.push('/play'),
+                      ),
+                      const Divider(height: 1),
+                      ListTile(
+                        leading: const Icon(Icons.redeem_rounded),
+                        title: const Text('Partner Perks',
+                            style:
+                                TextStyle(fontWeight: FontWeight.w800)),
+                        subtitle: const Text('Spend credits at local shops',
+                            style: TextStyle(fontSize: 12)),
+                        trailing: const Icon(Icons.chevron_right_rounded),
+                        onTap: () => context.push('/perks'),
+                      ),
+                      const Divider(height: 1),
+                      ListTile(
+                        leading: const Icon(Icons.forum_rounded),
+                        title: const Text('Community Board',
+                            style:
+                                TextStyle(fontWeight: FontWeight.w800)),
+                        subtitle: const Text('Suggest & upvote ideas',
+                            style: TextStyle(fontSize: 12)),
+                        trailing: const Icon(Icons.chevron_right_rounded),
+                        onTap: () => context.push('/community'),
                       ),
                       const Divider(height: 1),
                       ListTile(

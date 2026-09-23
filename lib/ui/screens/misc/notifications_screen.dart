@@ -17,6 +17,7 @@ class NotificationsScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.canvas,
       appBar: AppBar(
+        leading: const UniformBackButton(),
         title: const Text('Notifications'),
         actions: [
           TextButton(

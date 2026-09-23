@@ -101,7 +101,7 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
     }
     if (app == null) {
       return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(leading: const UniformBackButton()),
         body: const EmptyState(
           icon: Icons.meeting_room_rounded,
           title: 'Room unavailable',
@@ -127,6 +127,7 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
     return Scaffold(
       backgroundColor: AppColors.canvas,
       appBar: AppBar(
+        leading: const UniformBackButton(),
         titleSpacing: 0,
         title: Row(
           children: [

@@ -44,7 +44,10 @@ class _CompletionScreenState extends ConsumerState<CompletionScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.canvas,
-      appBar: AppBar(title: const Text('Complete')),
+      appBar: AppBar(
+        title: const Text('Complete'),
+        leading: const UniformBackButton(),
+      ),
       body: SafeArea(
         child: _submitted
             ? _done(context)

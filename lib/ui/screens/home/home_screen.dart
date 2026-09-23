@@ -67,38 +67,46 @@ class HomeScreen extends ConsumerWidget {
                         fit: BoxFit.contain,
                       ),
                       const SizedBox(width: AppDimens.sm),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 5),
-                        decoration: BoxDecoration(
-                          color: AppColors.surface,
-                          borderRadius:
-                              BorderRadius.circular(AppDimens.rPill),
-                          border: Border.all(color: AppColors.stroke),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Color(0x0F101323),
-                              blurRadius: 10,
-                              offset: Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: const Row(
-                          children: [
-                            Icon(Icons.local_fire_department_rounded,
-                                size: 15, color: AppColors.auroraCoral),
-                            SizedBox(width: 4),
-                            Text(
-                              '320 pts',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w900,
-                                fontSize: 12,
+                      GestureDetector(
+                        onTap: () => context.push('/perks'),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          decoration: BoxDecoration(
+                            color: AppColors.surface,
+                            borderRadius:
+                                BorderRadius.circular(AppDimens.rPill),
+                            border: Border.all(color: AppColors.stroke),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color(0x0F101323),
+                                blurRadius: 10,
+                                offset: Offset(0, 4),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.diamond_rounded,
+                                  size: 15, color: AppColors.auroraSky),
+                              const SizedBox(width: 4),
+                              Text(
+                                '${me?.karma ?? 0} cr',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       const Spacer(),
+                      IconButton(
+                        onPressed: () => context.push('/radar'),
+                        tooltip: 'Bored Radar — who is free nearby',
+                        icon: const Icon(Icons.radar_rounded),
+                      ),
                       IconButton(
                         onPressed: () => context.push('/notifications'),
                         icon: Badge(
@@ -234,6 +242,28 @@ class HomeScreen extends ConsumerWidget {
                     .slideY(begin: 0.15, end: 0, curve: Curves.easeOutCubic),
                 const SizedBox(height: AppDimens.lg),
 
+                // ── Hub shortcuts (new verticals) ────────────────────
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: AppDimens.lg),
+                  child: Row(
+                    children: [
+                      _hubTile(context, PostKind.emergency,
+                          live: true),
+                      const SizedBox(width: AppDimens.sm),
+                      _hubTile(context, PostKind.gig),
+                      const SizedBox(width: AppDimens.sm),
+                      _hubTile(context, PostKind.room),
+                      const SizedBox(width: AppDimens.sm),
+                      _hubTile(context, PostKind.team),
+                    ],
+                  ),
+                )
+                    .animate(delay: 200.ms)
+                    .fadeIn(duration: 400.ms)
+                    .slideY(begin: 0.12, end: 0, curve: Curves.easeOutCubic),
+                const SizedBox(height: AppDimens.lg),
+
                 // ── Sponsored banners (business advertisements) ──────
                 Padding(
                   padding: const EdgeInsets.symmetric(
@@ -287,7 +317,7 @@ class HomeScreen extends ConsumerWidget {
                         horizontal: AppDimens.lg),
                     child: SectionHeader(
                         title: 'Your active task',
-                        onViewAll: () => context.go('/activity')),
+                        onViewAll: () => context.push('/activity')),
                   ),
                   SizedBox(
                     height: 148,
@@ -324,7 +354,7 @@ class HomeScreen extends ConsumerWidget {
                       horizontal: AppDimens.lg),
                   child: SectionHeader(
                     title: 'Upcoming nearby',
-                    onViewAll: () => context.go('/discover'),
+                    onViewAll: () => context.push('/discover'),
                   ),
                 ),
                 SizedBox(
@@ -367,7 +397,7 @@ class HomeScreen extends ConsumerWidget {
                       horizontal: AppDimens.lg),
                   child: SectionHeader(
                     title: 'Recommended for you',
-                    onViewAll: () => context.go('/discover'),
+                    onViewAll: () => context.push('/discover'),
                   ),
                 ),
                 ...feed.skip(3).take(4).toList().asMap().entries.map(
@@ -497,5 +527,118 @@ class HomeScreen extends ConsumerWidget {
     if (h < 12) return 'Good morning';
     if (h < 17) return 'Good afternoon';
     return 'Good evening';
+  }
+
+  /// Gradient pair per hub for the tinted icon squircle.
+  static const _hubGradients = {
+    PostKind.emergency: LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [Color(0xFFFF8FA9), Color(0xFFE11D48)],
+    ),
+    PostKind.gig: LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [Color(0xFFFFD37A), Color(0xFFF59E0B)],
+    ),
+    PostKind.room: LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [Color(0xFFC4B5FD), Color(0xFF7C3AED)],
+    ),
+    PostKind.team: LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [Color(0xFF6EE7B7), Color(0xFF059669)],
+    ),
+  };
+
+  Widget _hubTile(BuildContext context, PostKind kind, {bool live = false}) {
+    final route = switch (kind) {
+      PostKind.emergency => '/emergency',
+      PostKind.gig => '/gigs',
+      PostKind.room => '/rooms',
+      PostKind.team => '/team',
+      _ => '/discover',
+    };
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => context.push(route),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 3),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Colors.white, Color(0xFFF7F9FE)],
+            ),
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: kind.colors.strong.withValues(alpha: 0.14),
+                blurRadius: 12,
+                offset: const Offset(0, 5),
+              ),
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.03),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              // Gradient icon squircle with inner highlight + live dot.
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Container(
+                    width: 36,
+                    height: 36,
+                    decoration: BoxDecoration(
+                      gradient: _hubGradients[kind],
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: kind.colors.strong.withValues(alpha: 0.35),
+                          blurRadius: 8,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Icon(kind.icon, size: 19, color: Colors.white),
+                  ),
+                  if (live)
+                    Positioned(
+                      top: -2,
+                      right: -2,
+                      child: Container(
+                        width: 10,
+                        height: 10,
+                        decoration: BoxDecoration(
+                          color: AppColors.danger,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                              color: Colors.white, width: 2),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 6),
+              Text(
+                kind.hubTitle.split(' ').first,
+                style: const TextStyle(
+                  fontSize: 10.5,
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.textPrimary,
+                  letterSpacing: -0.1,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

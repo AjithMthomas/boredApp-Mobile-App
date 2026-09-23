@@ -21,13 +21,15 @@ class AdCarousel extends StatefulWidget {
 
   static const _folder = 'assets/ads/';
 
-  /// Loads banner asset paths from the asset manifest.
+  /// Loads banner asset paths from the asset manifest, excluding the
+  /// auction poster (that one lives on the Discover page).
   static Future<List<String>> _discover() async {
     try {
       final manifest = await AssetManifest.loadFromAssetBundle(rootBundle);
       final assets = manifest
           .listAssets()
-          .where((a) => a.startsWith(_folder))
+          .where((a) =>
+              a.startsWith(_folder) && !a.contains('auction_card'))
           .toList()
         ..sort();
       return assets;

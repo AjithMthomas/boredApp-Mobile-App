@@ -91,14 +91,17 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
 
     if (task == null) {
       return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(leading: const UniformBackButton()),
         body: const Center(child: Text('Task not found')),
       );
     }
 
     return Scaffold(
       backgroundColor: AppColors.canvas,
-      appBar: AppBar(title: const Text('Active session')),
+      appBar: AppBar(
+        title: const Text('Active session'),
+        leading: const UniformBackButton(),
+      ),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(AppDimens.lg),

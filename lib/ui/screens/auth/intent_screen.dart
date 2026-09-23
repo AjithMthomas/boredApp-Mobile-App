@@ -36,7 +36,7 @@ class _IntentScreenState extends ConsumerState<IntentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.canvas,
-      appBar: AppBar(),
+      appBar: AppBar(leading: const UniformBackButton()),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(AppDimens.xl),

@@ -16,7 +16,10 @@ class SafetyCenterScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.canvas,
-      appBar: AppBar(title: const Text('Safety Center')),
+      appBar: AppBar(
+        title: const Text('Safety Center'),
+        leading: const UniformBackButton(),
+      ),
       body: ListView(
         padding: const EdgeInsets.all(AppDimens.lg),
         children: [

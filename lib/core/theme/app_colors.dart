@@ -14,9 +14,15 @@ abstract final class AppColors {
   static const inkSoft = Color(0xFF1B2036);
   static const inkContainer = Color(0xFF232A47);
 
+  // ── Selection Buttons & Chips ──────────────────────────────────
+  static const selectionActive = Color(0xFF0EA5E9); // Exact blue matching bottom navigation bar active tab
+  static const selectionActiveText = Color(0xFFFFFFFF);
+  static const selectionInactive = Color(0xFFFFFFFF);
+  static const selectionInactiveText = Color(0xFF5A6072);
+
   // ── Aurora palette (the brand gradients) ───────────────────────
   static const auroraMint = Color(0xFF5EEAD4); // teal-mint
-  static const auroraSky = Color(0xFF60A5FA); // bright blue
+  static const auroraSky = Color(0xFF0EA5E9); // bright blue matching navigation & active filters
   static const auroraViolet = Color(0xFF8B5CF6); // vivid violet
   static const auroraLilac = Color(0xFFC4B5FD); // soft lilac
   static const auroraCoral = Color(0xFFFB7185); // rose coral

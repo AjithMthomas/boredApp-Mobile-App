@@ -11,6 +11,9 @@ class Task {
     required this.creatorRating,
     required this.creatorCompleted,
     required this.type,
+    this.kind = PostKind.regular,
+    this.payoutNote = '',
+    this.genderPreference = GenderPreference.anyone,
     required this.title,
     required this.description,
     required this.category,
@@ -22,7 +25,6 @@ class Task {
     required this.rewardAmount,
     required this.capacity,
     required this.applicantCount,
-    required this.genderPreference,
     required this.risk,
     required this.status,
     required this.createdAt,
@@ -39,6 +41,13 @@ class Task {
   final int creatorCompleted;
 
   final PostType type;
+
+  /// Dedicated-hub vertical (Emergency / Gig / Room / Team / Trip).
+  final PostKind kind;
+
+  /// Kind-specific free note: payout terms for gigs ("₹1,000/day · 1 week"),
+  /// budget for rooms ("1RK under ₹10k"), destination for trips.
+  final String payoutNote;
   final String title;
   final String description;
   final String category;

@@ -1,5 +1,8 @@
 import 'enums.dart';
 
+/// Phase 8 — badges earned from post-session mutual reviews.
+const Map<String, int> kDefaultBadgeVotes = {};
+
 /// Member model. PII is intentionally minimal (email-only auth),
 /// everything else is public-name + trust signals.
 /// Visual identity = profile photo when available, otherwise a
@@ -28,6 +31,10 @@ class Member {
     required this.safetyContactName,
     required this.safetyContactPhone,
     required this.availabilityHours,
+    this.karma = 0,
+    this.isGuardian = false,
+    this.availableNow = false,
+    this.badges = const {},
   });
 
   final String id;
@@ -61,6 +68,59 @@ class Member {
   final String? safetyContactPhone;
 
   final String availabilityHours;
+
+  // ── Community layer ──────────────────────────────────────────
+  /// Time Credits — earned for free community tasks, redeemable for
+  /// partner perks (Phase: Karma & Pay-it-Forward).
+  final int karma;
+
+  /// Verified emergency responder with ID & trust checks (Guardian Shield).
+  final bool isGuardian;
+
+  /// "Available Now" roster toggle (Emergency Helpers phase).
+  final bool availableNow;
+
+  /// Trust badges earned from reviews.
+  final Set<TrustBadge> badges;
+
+  Member copyMemberWith({
+    int? karma,
+    bool? isGuardian,
+    bool? availableNow,
+    Set<TrustBadge>? badges,
+    int? completedCount,
+  }) {
+    return Member(
+      id: id,
+      publicName: publicName,
+      email: email,
+      photoUrl: photoUrl,
+      gender: gender,
+      bio: bio,
+      completedCount: completedCount ?? this.completedCount,
+      rating: rating,
+      ratingCount: ratingCount,
+      cancellations: cancellations,
+      noShows: noShows,
+      accountAgeMonths: accountAgeMonths,
+      verifiedBadge: verifiedBadge,
+      isEstablished: completedCount != null && completedCount >= 40
+          ? true
+          : isEstablished,
+      joinedAt: joinedAt,
+      dateOfBirth: dateOfBirth,
+      ageGatePassed: ageGatePassed,
+      categories: categories,
+      isEmailVerified: isEmailVerified,
+      safetyContactName: safetyContactName,
+      safetyContactPhone: safetyContactPhone,
+      availabilityHours: availabilityHours,
+      karma: karma ?? this.karma,
+      isGuardian: isGuardian ?? this.isGuardian,
+      availableNow: availableNow ?? this.availableNow,
+      badges: badges ?? this.badges,
+    );
+  }
 
   int get reliabilityPercent {
     if (completedCount == 0) return 100;
