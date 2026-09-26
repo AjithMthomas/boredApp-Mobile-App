@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../core/models/models.dart';
 import '../../core/theme/app_colors.dart';
@@ -98,10 +99,13 @@ class _BackChip extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(11),
           onTap: () {
+            Haptics.select();
             if (onTap != null) {
               onTap!();
+            } else if (GoRouter.of(context).canPop()) {
+              context.pop();
             } else {
-              Navigator.of(context).maybePop();
+              context.go('/home');
             }
           },
           child: Container(

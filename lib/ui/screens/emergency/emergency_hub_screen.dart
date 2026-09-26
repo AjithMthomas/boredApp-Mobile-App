@@ -121,74 +121,7 @@ class _EmergencyHubScreenState extends ConsumerState<EmergencyHubScreen> {
                     height: 196,
                     fit: BoxFit.cover,
                   ),
-                  Positioned.fill(
-                    child: Container(
-                      padding: const EdgeInsets.all(AppDimens.lg),
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          colors: [
-                            Color(0xB37F1D3A),
-                            Color(0x337F1D3A),
-                            Color(0x147F1D3A),
-                          ],
-                        ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 3),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.18),
-                              borderRadius: BorderRadius.circular(
-                                  AppDimens.rPill),
-                            ),
-                            child: const Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.circle,
-                                    size: 6, color: Colors.white),
-                                SizedBox(width: 5),
-                                Text(
-                                  'PRIORITY DISPATCH',
-                                  style: TextStyle(
-                                    fontSize: 9.5,
-                                    fontWeight: FontWeight.w900,
-                                    letterSpacing: 1.2,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const Spacer(),
-                          const Text(
-                            'Need help right now?',
-                            style: TextStyle(
-                              fontSize: 21,
-                              fontWeight: FontWeight.w900,
-                              color: Colors.white,
-                              letterSpacing: -0.4,
-                              height: 1.15,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            'Broadcast to every Available-Now helper and Guardian nearby.',
-                            style: TextStyle(
-                              fontSize: 11.5,
-                              height: 1.4,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white.withValues(alpha: 0.85),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+
                   // Live count chips (top-right, glass).
                   Positioned(
                     top: 12,
@@ -461,18 +394,36 @@ class _EmergencyHubScreenState extends ConsumerState<EmergencyHubScreen> {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (ctx) => StatefulBuilder(
-        builder: (ctx, setSheet) => SingleChildScrollView(
-          padding: EdgeInsets.only(
-            left: AppDimens.xl,
-            right: AppDimens.xl,
-            top: AppDimens.lg,
-            bottom: MediaQuery.of(ctx).viewInsets.bottom + AppDimens.xl,
+        builder: (ctx, setSheet) => Container(
+          decoration: const BoxDecoration(
+            color: AppColors.canvas,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Row(
+          child: SafeArea(
+            top: false,
+            child: SingleChildScrollView(
+              padding: EdgeInsets.only(
+                left: AppDimens.xl,
+                right: AppDimens.xl,
+                top: AppDimens.md,
+                bottom: MediaQuery.of(ctx).viewInsets.bottom + AppDimens.xl,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      width: 36,
+                      height: 4,
+                      margin: const EdgeInsets.only(bottom: AppDimens.md),
+                      decoration: BoxDecoration(
+                        color: AppColors.strokeStrong,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                  ),
+                  const Row(
                 children: [
                   Icon(Icons.emergency_share_rounded, color: AppColors.danger),
                   SizedBox(width: 10),
@@ -574,8 +525,10 @@ class _EmergencyHubScreenState extends ConsumerState<EmergencyHubScreen> {
           ),
         ),
       ),
-    );
-  }
+    ),
+  ),
+);
+}
 }
 
 /// Pulsing SOS trigger button.

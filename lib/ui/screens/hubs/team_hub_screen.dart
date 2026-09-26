@@ -81,74 +81,7 @@ class _TeamHubScreenState extends ConsumerState<TeamHubScreen> {
                     height: 186,
                     fit: BoxFit.cover,
                   ),
-                  Positioned.fill(
-                    child: Container(
-                      padding: const EdgeInsets.all(AppDimens.lg),
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          colors: [
-                            Color(0xB3065F46),
-                            Color(0x33065F46),
-                            Color(0x14065F46),
-                          ],
-                        ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 3),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.18),
-                              borderRadius: BorderRadius.circular(
-                                  AppDimens.rPill),
-                            ),
-                            child: const Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.diversity_3_rounded,
-                                    size: 12, color: Colors.white),
-                                SizedBox(width: 5),
-                                Text(
-                                  'MAKE TEAM · TRIPS',
-                                  style: TextStyle(
-                                    fontSize: 9.5,
-                                    fontWeight: FontWeight.w900,
-                                    letterSpacing: 1.2,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const Spacer(),
-                          const Text(
-                            'Gather your\ncrowd',
-                            style: TextStyle(
-                              fontSize: 21,
-                              fontWeight: FontWeight.w900,
-                              color: Colors.white,
-                              letterSpacing: -0.4,
-                              height: 1.15,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            '10 for a reel shoot, 50 for a cafe launch, a Nandi Hills trip — heads reserve live.',
-                            style: TextStyle(
-                              fontSize: 11.5,
-                              height: 1.4,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white.withValues(alpha: 0.85),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+
                 ],
               ),
             ),
@@ -423,17 +356,35 @@ class _TeamCreateSheetState extends ConsumerState<_TeamCreateSheet> {
         ? _totalCost / _headcount
         : 0.0;
 
-    return SingleChildScrollView(
-      padding: EdgeInsets.only(
-        left: AppDimens.xl,
-        right: AppDimens.xl,
-        top: AppDimens.lg,
-        bottom: MediaQuery.of(context).viewInsets.bottom + AppDimens.xl,
+    return Container(
+      decoration: const BoxDecoration(
+        color: AppColors.canvas,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Row(
+      child: SafeArea(
+        top: false,
+        child: SingleChildScrollView(
+          padding: EdgeInsets.only(
+            left: AppDimens.xl,
+            right: AppDimens.xl,
+            top: AppDimens.md,
+            bottom: MediaQuery.of(context).viewInsets.bottom + AppDimens.xl,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 36,
+                  height: 4,
+                  margin: const EdgeInsets.only(bottom: AppDimens.md),
+                  decoration: BoxDecoration(
+                    color: AppColors.strokeStrong,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              const Row(
             children: [
               Icon(Icons.diversity_3_rounded, color: AppColors.success),
               SizedBox(width: 10),
@@ -642,8 +593,10 @@ class _TeamCreateSheetState extends ConsumerState<_TeamCreateSheet> {
           ),
         ],
       ),
-    );
-  }
+    ),
+  ),
+);
+}
 
   Widget _stepper({
     required String label,

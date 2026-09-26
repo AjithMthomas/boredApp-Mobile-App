@@ -81,74 +81,7 @@ class _GigsHubScreenState extends ConsumerState<GigsHubScreen> {
                     height: 186,
                     fit: BoxFit.cover,
                   ),
-                  Positioned.fill(
-                    child: Container(
-                      padding: const EdgeInsets.all(AppDimens.lg),
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          colors: [
-                            Color(0xB392400E),
-                            Color(0x3392400E),
-                            Color(0x1492400E),
-                          ],
-                        ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 3),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.18),
-                              borderRadius: BorderRadius.circular(
-                                  AppDimens.rPill),
-                            ),
-                            child: const Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.storefront_rounded,
-                                    size: 12, color: Colors.white),
-                                SizedBox(width: 5),
-                                Text(
-                                  'SHOP GIGS',
-                                  style: TextStyle(
-                                    fontSize: 9.5,
-                                    fontWeight: FontWeight.w900,
-                                    letterSpacing: 1.2,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const Spacer(),
-                          const Text(
-                            'Hire a hand for\nyour shop',
-                            style: TextStyle(
-                              fontSize: 21,
-                              fontWeight: FontWeight.w900,
-                              color: Colors.white,
-                              letterSpacing: -0.4,
-                              height: 1.15,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            'Two reps for a week? Morning-rush help? Post with clear daily pay.',
-                            style: TextStyle(
-                              fontSize: 11.5,
-                              height: 1.4,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white.withValues(alpha: 0.85),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+
                 ],
               ),
             ),
@@ -417,17 +350,35 @@ class _GigCreateSheetState extends ConsumerState<_GigCreateSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: EdgeInsets.only(
-        left: AppDimens.xl,
-        right: AppDimens.xl,
-        top: AppDimens.lg,
-        bottom: MediaQuery.of(context).viewInsets.bottom + AppDimens.xl,
+    return Container(
+      decoration: const BoxDecoration(
+        color: AppColors.canvas,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Row(
+      child: SafeArea(
+        top: false,
+        child: SingleChildScrollView(
+          padding: EdgeInsets.only(
+            left: AppDimens.xl,
+            right: AppDimens.xl,
+            top: AppDimens.md,
+            bottom: MediaQuery.of(context).viewInsets.bottom + AppDimens.xl,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 36,
+                  height: 4,
+                  margin: const EdgeInsets.only(bottom: AppDimens.md),
+                  decoration: BoxDecoration(
+                    color: AppColors.strokeStrong,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              const Row(
             children: [
               Icon(Icons.storefront_rounded, color: AppColors.auroraAmber),
               SizedBox(width: 10),
@@ -519,8 +470,10 @@ class _GigCreateSheetState extends ConsumerState<_GigCreateSheet> {
           ),
         ],
       ),
-    );
-  }
+    ),
+  ),
+);
+}
 
   Widget _stepper({
     required String label,
@@ -624,74 +577,7 @@ class _RoomFinderScreenState extends ConsumerState<RoomFinderScreen> {
                     height: 186,
                     fit: BoxFit.cover,
                   ),
-                  Positioned.fill(
-                    child: Container(
-                      padding: const EdgeInsets.all(AppDimens.lg),
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          colors: [
-                            Color(0xB34C1D95),
-                            Color(0x334C1D95),
-                            Color(0x144C1D95),
-                          ],
-                        ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 3),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.18),
-                              borderRadius: BorderRadius.circular(
-                                  AppDimens.rPill),
-                            ),
-                            child: const Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.night_shelter_rounded,
-                                    size: 12, color: Colors.white),
-                                SizedBox(width: 5),
-                                Text(
-                                  'ROOM FINDER',
-                                  style: TextStyle(
-                                    fontSize: 9.5,
-                                    fontWeight: FontWeight.w900,
-                                    letterSpacing: 1.2,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const Spacer(),
-                          const Text(
-                            'Hunting for a\nroom nearby?',
-                            style: TextStyle(
-                              fontSize: 21,
-                              fontWeight: FontWeight.w900,
-                              color: Colors.white,
-                              letterSpacing: -0.4,
-                              height: 1.15,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            'Post your requirement — local scouts hunt for you and earn a finder fee.',
-                            style: TextStyle(
-                              fontSize: 11.5,
-                              height: 1.4,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white.withValues(alpha: 0.85),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+
                 ],
               ),
             ),
@@ -894,156 +780,176 @@ class _RoomCreateSheetState extends ConsumerState<_RoomCreateSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: AppDimens.xl,
-        right: AppDimens.xl,
-        top: AppDimens.lg,
-        bottom: MediaQuery.of(context).viewInsets.bottom + AppDimens.xl,
+    return Container(
+      decoration: const BoxDecoration(
+        color: AppColors.canvas,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      child: ListView(
-        shrinkWrap: true,
-        children: [
-          const Row(
+      child: SafeArea(
+        top: false,
+        child: SingleChildScrollView(
+          padding: EdgeInsets.only(
+            left: AppDimens.xl,
+            right: AppDimens.xl,
+            top: AppDimens.md,
+            bottom: MediaQuery.of(context).viewInsets.bottom + AppDimens.xl,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.night_shelter_rounded, color: AppColors.auroraViolet),
-              SizedBox(width: 10),
-              Text('Post room requirement',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900)),
-            ],
-          ),
-          const SizedBox(height: 6),
-          const Text(
-            'Area only — never share your exact address publicly.',
-            style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
-          ),
-          const SizedBox(height: AppDimens.lg),
-          TextField(
-            controller: _titleCtrl,
-            maxLength: 60,
-            decoration: const InputDecoration(
-                hintText: 'Headline (e.g. \"Urgent: 1RK near Madiwala market\")'),
-          ),
-          const SizedBox(height: AppDimens.sm),
-          TextField(
-            controller: _descCtrl,
-            maxLines: 3,
-            decoration: const InputDecoration(
-                hintText: 'Must-haves: ventilation, ground floor, near bus stop…'),
-          ),
-          const SizedBox(height: AppDimens.sm),
-          TextField(
-            controller: _areaCtrl,
-            decoration: const InputDecoration(
-              hintText: 'Preferred area (e.g. \"Madiwala / BTM border\")',
-              prefixIcon: Icon(Icons.place_outlined),
-            ),
-          ),
-          const SizedBox(height: AppDimens.lg),
-          const Text('Room type',
-              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 13.5)),
-          const SizedBox(height: AppDimens.sm),
-          Wrap(
-            spacing: AppDimens.sm,
-            children: _types.map((ty) {
-              final on = _roomType == ty;
-              return GestureDetector(
-                onTap: () => setState(() => _roomType = ty),
+              Center(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 14, vertical: 9),
+                  width: 36,
+                  height: 4,
+                  margin: const EdgeInsets.only(bottom: AppDimens.md),
                   decoration: BoxDecoration(
-                    color:
-                        on ? AppColors.selectionActive : AppColors.surface,
-                    borderRadius: BorderRadius.circular(AppDimens.rPill),
-                    border: Border.all(
-                        color:
-                            on ? AppColors.selectionActive : AppColors.stroke),
+                    color: AppColors.strokeStrong,
+                    borderRadius: BorderRadius.circular(2),
                   ),
-                  child: Text(ty,
-                      style: TextStyle(
-                          fontSize: 12.5,
-                          fontWeight: FontWeight.w800,
-                          color: on
-                              ? Colors.white
-                              : AppColors.textSecondary)),
                 ),
-              );
-            }).toList(),
-          ),
-          const SizedBox(height: AppDimens.lg),
-          _slider(
-            label: 'Monthly budget',
-            value: '₹${_budget.toStringAsFixed(0)}',
-            min: 3000,
-            max: 40000,
-            divisions: 37,
-            current: _budget,
-            onChanged: (v) => setState(() => _budget = v),
-          ),
-          _slider(
-            label: "Finder's fee",
-            value: '₹${_fee.toStringAsFixed(0)}',
-            min: 0,
-            max: 2000,
-            divisions: 20,
-            current: _fee,
-            onChanged: (v) => setState(() => _fee = v),
-          ),
-          const SizedBox(height: AppDimens.sm),
-          const Text('Scout gender preference',
-              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 13.5)),
-          const SizedBox(height: AppDimens.sm),
-          Wrap(
-            spacing: AppDimens.sm,
-            children: GenderPreference.values.map((g) {
-              final on = _genderPref == g;
-              return GestureDetector(
-                onTap: () => setState(() => _genderPref = g),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 13, vertical: 9),
-                  decoration: BoxDecoration(
-                    color:
-                        on ? AppColors.selectionActive : AppColors.surface,
-                    borderRadius: BorderRadius.circular(AppDimens.rPill),
-                    border: Border.all(
+              ),
+              const Row(
+                children: [
+                  Icon(Icons.night_shelter_rounded, color: AppColors.auroraViolet),
+                  SizedBox(width: 10),
+                  Text('Post room requirement',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900)),
+                ],
+              ),
+              const SizedBox(height: 6),
+              const Text(
+                'Area only — never share your exact address publicly.',
+                style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+              ),
+              const SizedBox(height: AppDimens.lg),
+              TextField(
+                controller: _titleCtrl,
+                maxLength: 60,
+                decoration: const InputDecoration(
+                    hintText: 'Headline (e.g. "Urgent: 1RK near Madiwala market")'),
+              ),
+              const SizedBox(height: AppDimens.sm),
+              TextField(
+                controller: _descCtrl,
+                maxLines: 3,
+                decoration: const InputDecoration(
+                    hintText: 'Must-haves: ventilation, ground floor, near bus stop…'),
+              ),
+              const SizedBox(height: AppDimens.sm),
+              TextField(
+                controller: _areaCtrl,
+                decoration: const InputDecoration(
+                  hintText: 'Preferred area (e.g. "Madiwala / BTM border")',
+                  prefixIcon: Icon(Icons.place_outlined),
+                ),
+              ),
+              const SizedBox(height: AppDimens.lg),
+              const Text('Room type',
+                  style: TextStyle(fontWeight: FontWeight.w800, fontSize: 13.5)),
+              const SizedBox(height: AppDimens.sm),
+              Wrap(
+                spacing: AppDimens.sm,
+                children: _types.map((ty) {
+                  final on = _roomType == ty;
+                  return GestureDetector(
+                    onTap: () => setState(() => _roomType = ty),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 9),
+                      decoration: BoxDecoration(
                         color:
-                            on ? AppColors.selectionActive : AppColors.stroke),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(g.icon,
-                          size: 15,
-                          color: on
-                              ? Colors.white
-                              : AppColors.textSecondary),
-                      const SizedBox(width: 6),
-                      Text(g.label,
+                            on ? AppColors.selectionActive : AppColors.surface,
+                        borderRadius: BorderRadius.circular(AppDimens.rPill),
+                        border: Border.all(
+                            color:
+                                on ? AppColors.selectionActive : AppColors.stroke),
+                      ),
+                      child: Text(ty,
                           style: TextStyle(
                               fontSize: 12.5,
                               fontWeight: FontWeight.w800,
                               color: on
                                   ? Colors.white
                                   : AppColors.textSecondary)),
-                    ],
-                  ),
+                    ),
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: AppDimens.lg),
+              _slider(
+                label: 'Monthly budget',
+                value: '₹${_budget.toStringAsFixed(0)}',
+                min: 3000,
+                max: 40000,
+                divisions: 37,
+                current: _budget,
+                onChanged: (v) => setState(() => _budget = v),
+              ),
+              _slider(
+                label: "Finder's fee",
+                value: '₹${_fee.toStringAsFixed(0)}',
+                min: 0,
+                max: 2000,
+                divisions: 20,
+                current: _fee,
+                onChanged: (v) => setState(() => _fee = v),
+              ),
+              const SizedBox(height: AppDimens.sm),
+              const Text('Scout gender preference',
+                  style: TextStyle(fontWeight: FontWeight.w800, fontSize: 13.5)),
+              const SizedBox(height: AppDimens.sm),
+              Wrap(
+                spacing: AppDimens.sm,
+                children: GenderPreference.values.map((g) {
+                  final on = _genderPref == g;
+                  return GestureDetector(
+                    onTap: () => setState(() => _genderPref = g),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 13, vertical: 9),
+                      decoration: BoxDecoration(
+                        color:
+                            on ? AppColors.selectionActive : AppColors.surface,
+                        borderRadius: BorderRadius.circular(AppDimens.rPill),
+                        border: Border.all(
+                            color:
+                                on ? AppColors.selectionActive : AppColors.stroke),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(g.icon,
+                              size: 15,
+                              color: on
+                                  ? Colors.white
+                                  : AppColors.textSecondary),
+                          const SizedBox(width: 6),
+                          Text(g.label,
+                              style: TextStyle(
+                                  fontSize: 12.5,
+                                  fontWeight: FontWeight.w800,
+                                  color: on
+                                      ? Colors.white
+                                      : AppColors.textSecondary)),
+                        ],
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: AppDimens.xl),
+              SizedBox(
+                width: double.infinity,
+                child: PrimaryButton(
+                  label: 'Post requirement',
+                  icon: Icons.travel_explore_rounded,
+                  onPressed: _valid ? _publish : null,
+                  color: AppColors.auroraViolet,
                 ),
-              );
-            }).toList(),
+              ),
+            ],
           ),
-          const SizedBox(height: AppDimens.xl),
-          SizedBox(
-            width: double.infinity,
-            child: PrimaryButton(
-              label: 'Post requirement',
-              icon: Icons.travel_explore_rounded,
-              onPressed: _valid ? _publish : null,
-              color: AppColors.auroraViolet,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

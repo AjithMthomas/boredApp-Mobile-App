@@ -529,28 +529,50 @@ class HomeScreen extends ConsumerWidget {
     return 'Good evening';
   }
 
+  /// Soft background colors per hub.
+  static const _hubTileBgColors = {
+    PostKind.emergency: Color(0xFFFFF0F3),
+    PostKind.gig: Color(0xFFFFF8E7),
+    PostKind.room: Color(0xFFF3E8FF),
+    PostKind.team: Color(0xFFE6F4EA),
+  };
+
   /// Gradient pair per hub for the tinted icon squircle.
   static const _hubGradients = {
     PostKind.emergency: LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
-      colors: [Color(0xFFFF8FA9), Color(0xFFE11D48)],
+      colors: [Color(0xFFFF4D6D), Color(0xFFE61C40)],
     ),
     PostKind.gig: LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
-      colors: [Color(0xFFFFD37A), Color(0xFFF59E0B)],
+      colors: [Color(0xFFFFB703), Color(0xFFFB8500)],
     ),
     PostKind.room: LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
-      colors: [Color(0xFFC4B5FD), Color(0xFF7C3AED)],
+      colors: [Color(0xFF8B5CF6), Color(0xFF6D28D9)],
     ),
     PostKind.team: LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
-      colors: [Color(0xFF6EE7B7), Color(0xFF059669)],
+      colors: [Color(0xFF10B981), Color(0xFF059669)],
     ),
+  };
+
+  static const _hubIcons = {
+    PostKind.emergency: Icons.notifications_active_rounded,
+    PostKind.gig: Icons.storefront_rounded,
+    PostKind.room: Icons.home_rounded,
+    PostKind.team: Icons.groups_rounded,
+  };
+
+  static const _hubLabels = {
+    PostKind.emergency: 'Emergency',
+    PostKind.gig: 'Shop',
+    PostKind.room: 'Room',
+    PostKind.team: 'Make',
   };
 
   Widget _hubTile(BuildContext context, PostKind kind, {bool live = false}) {
@@ -561,43 +583,39 @@ class HomeScreen extends ConsumerWidget {
       PostKind.team => '/team',
       _ => '/discover',
     };
+    final bgColor = _hubTileBgColors[kind] ?? Colors.white;
+    final iconData = _hubIcons[kind] ?? kind.icon;
+    final label = _hubLabels[kind] ?? kind.hubTitle.split(' ').first;
+
     return Expanded(
       child: GestureDetector(
         onTap: () => context.push(route),
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 3),
+          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 4),
           decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Colors.white, Color(0xFFF7F9FE)],
-            ),
-            borderRadius: BorderRadius.circular(16),
+            color: bgColor,
+            borderRadius: BorderRadius.circular(22),
             boxShadow: [
               BoxShadow(
-                color: kind.colors.strong.withValues(alpha: 0.14),
-                blurRadius: 12,
-                offset: const Offset(0, 5),
-              ),
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.03),
-                blurRadius: 4,
-                offset: const Offset(0, 2),
+                color: Colors.black.withValues(alpha: 0.04),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
               ),
             ],
           ),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               // Gradient icon squircle with inner highlight + live dot.
               Stack(
                 clipBehavior: Clip.none,
                 children: [
                   Container(
-                    width: 36,
-                    height: 36,
+                    width: 44,
+                    height: 44,
                     decoration: BoxDecoration(
                       gradient: _hubGradients[kind],
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
                           color: kind.colors.strong.withValues(alpha: 0.35),
@@ -606,7 +624,7 @@ class HomeScreen extends ConsumerWidget {
                         ),
                       ],
                     ),
-                    child: Icon(kind.icon, size: 19, color: Colors.white),
+                    child: Icon(iconData, size: 22, color: Colors.white),
                   ),
                   if (live)
                     Positioned(
@@ -618,21 +636,20 @@ class HomeScreen extends ConsumerWidget {
                         decoration: BoxDecoration(
                           color: AppColors.danger,
                           shape: BoxShape.circle,
-                          border: Border.all(
-                              color: Colors.white, width: 2),
+                          border: Border.all(color: Colors.white, width: 2),
                         ),
                       ),
                     ),
                 ],
               ),
-              const SizedBox(height: 6),
+              const SizedBox(height: 8),
               Text(
-                kind.hubTitle.split(' ').first,
+                label,
                 style: const TextStyle(
-                  fontSize: 10.5,
+                  fontSize: 12,
                   fontWeight: FontWeight.w800,
-                  color: AppColors.textPrimary,
-                  letterSpacing: -0.1,
+                  color: Color(0xFF1E293B),
+                  letterSpacing: -0.2,
                 ),
               ),
             ],
