@@ -29,10 +29,10 @@ class ApiError implements Exception {
 ///
 ///   flutter build apk --release --dart-define=NEEDY_API_URL=https://your-api.onrender.com
 const String _kDefinedApiUrl = String.fromEnvironment('NEEDY_API_URL');
-const String _kLegacyApiUrl = String.fromEnvironment('NUVRA_API_URL');
+const String _kLegacyApiUrl = String.fromEnvironment('NEEDY_API_URL');
 String kDefaultApiUrl = () {
   final defined = String.fromEnvironment('NEEDY_API_URL');
-  final legacy = String.fromEnvironment('NUVRA_API_URL');
+  final legacy = String.fromEnvironment('NEEDY_API_URL');
   if (defined.isNotEmpty) return defined;
   if (legacy.isNotEmpty) return legacy;
   return 'http://10.0.2.2:8000'; // Android emulator -> host machine

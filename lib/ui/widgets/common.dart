@@ -98,7 +98,6 @@ class NeedyImage extends StatelessWidget {
       );
 }
 
-typedef NuvraImage = NeedyImage;
 
 /// The ONE back button used on every screen of the app.
 ///

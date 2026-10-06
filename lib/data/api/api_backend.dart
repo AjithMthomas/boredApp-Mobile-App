@@ -3,7 +3,7 @@
 // Same method names as MockBackend so screens never change; every call
 // fires the network request in the background and applies results to a
 // local cache that notifies listeners (optimistic updates, offline
-// tolerant). Toggle via --dart-define=NUVRA_USE_API=true.
+// tolerant). Toggle via --dart-define=NEEDY_USE_API=true.
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
@@ -166,11 +166,11 @@ class ApiBackend extends ChangeNotifier implements BackendContract {
   Future<void> _loadLocalSession() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      signedIn = prefs.getBool('needy_signed_in') ?? prefs.getBool('nuvra_signed_in') ?? false;
-      pendingEmail = prefs.getString('needy_email') ?? prefs.getString('nuvra_email');
-      signupName = prefs.getString('needy_name') ?? prefs.getString('nuvra_name') ?? '';
-      signupBio = prefs.getString('needy_bio') ?? prefs.getString('nuvra_bio') ?? '';
-      signupCategories = prefs.getStringList('needy_categories') ?? prefs.getStringList('nuvra_categories') ?? [];
+      signedIn = prefs.getBool('needy_signed_in') ?? prefs.getBool('needy_signed_in') ?? false;
+      pendingEmail = prefs.getString('needy_email') ?? prefs.getString('needy_email');
+      signupName = prefs.getString('needy_name') ?? prefs.getString('needy_name') ?? '';
+      signupBio = prefs.getString('needy_bio') ?? prefs.getString('needy_bio') ?? '';
+      signupCategories = prefs.getStringList('needy_categories') ?? prefs.getStringList('needy_categories') ?? [];
       if (signedIn && _api.hasToken) {
         try {
           final data = await _api.get('/api/v1/me') as Map<String, dynamic>;

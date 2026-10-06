@@ -15,7 +15,7 @@ class StoreState {
 /// Build with `--dart-define=NEEDY_USE_API=true` to run against the real
 /// Django backend; default (and all tests) use the offline mock.
 const bool kUseApi =
-    bool.fromEnvironment('NEEDY_USE_API') || bool.fromEnvironment('NUVRA_USE_API');
+    bool.fromEnvironment('NEEDY_USE_API') || bool.fromEnvironment('NEEDY_API_URL');
 
 /// Single app-wide store provider. Screens watch [storeProvider] and call
 /// methods on `.backend`; every mutation notifies and rev++.
