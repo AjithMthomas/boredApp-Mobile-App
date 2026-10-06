@@ -1,5 +1,8 @@
 // Madiwala seed content + in-memory mock backend.
 // Swap `MockBackend` for the API implementation in Stage 2 — interfaces match.
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../core/models/models.dart';
 import '../core/moderation.dart';
 import '../core/theme/app_colors.dart';
+import 'backend_contract.dart';
 import 'task_draft.dart';
 
 export 'task_draft.dart';
@@ -631,7 +635,13 @@ class MockNotification {
 }
 
 /// In-memory backend implementing every use-case the app needs.
-class MockBackend extends ChangeNotifier {
+class MockBackend extends ChangeNotifier implements BackendContract {
+  /// Demo rules are permissive, so nothing is ever emitted — the getter
+  /// exists purely for BackendContract parity.
+  final _errors = StreamController<String>.broadcast();
+
+  @override
+  Stream<String> get errors => _errors.stream;
   // ── Auth / signup state ──────────────────────────────────────────
   bool signedIn = false;
   String? pendingEmail;
@@ -651,7 +661,7 @@ class MockBackend extends ChangeNotifier {
   final List<MockNotification> notifications = [
     MockNotification(
       id: _Ids.next('n'),
-      title: 'Welcome to nuvra',
+      title: 'Welcome to needy',
       body: 'Your Madiwala feed is live. Start with a tea walk?',
       createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
       read: true,
@@ -659,6 +669,8 @@ class MockBackend extends ChangeNotifier {
   ];
   final Set<String> savedTaskIds = {};
   final Set<String> repostedTaskIds = {};
+  @override
+  List<RadarZoneData> get radarZones => kSeedRadarZones;
 
   // ── Preferences ──────────────────────────────────────────────────
   String feedSource = 'nearby';
@@ -721,7 +733,7 @@ class MockBackend extends ChangeNotifier {
       final isSavedSignedIn = prefs.getBool('auth_signed_in') ?? false;
       if (isSavedSignedIn) {
         signedIn = true;
-        pendingEmail = prefs.getString('auth_email') ?? 'user@nuvra.app';
+        pendingEmail = prefs.getString('auth_email') ?? 'user@needy.app';
         signupName = prefs.getString('auth_name') ?? 'You';
         signupBio = prefs.getString('auth_bio') ?? 'New in Madiwala.';
         final photo = prefs.getString('auth_photo') ?? _p('1517841905240-472988babdf9');
@@ -1253,6 +1265,16 @@ class MockBackend extends ChangeNotifier {
     notifyListeners();
     return true;
   }
+
+  @override
+  Future<String> uploadImage(
+    Uint8List bytes, {
+    required String filename,
+    required String mimeType,
+  }) async =>
+      // Demo mode keeps everything in memory: inline data URL renders
+      // anywhere via NeedyImage without a server.
+      'data:$mimeType;base64,${base64Encode(bytes)}';
 
   AuctionItem createAuction({
     required String title,
@@ -1963,7 +1985,7 @@ final List<PartnerPerk> kSeedPerks = [
     id: 'p2',
     merchant: 'Nagarjuna Meals',
     title: '20% off biryani (2+ people)',
-    details: 'Flat discount on dine-in for groups of two or more nuvra members.',
+    details: 'Flat discount on dine-in for groups of two or more needy members.',
     emojiIcon: Icons.restaurant_rounded,
     costKarma: 200,
     area: 'Madiwala Main Rd',
@@ -2023,3 +2045,35 @@ final List<({String zone, int free, int tasks, int tea})> kSeedRadar = [
   (zone: 'Madiwala Market', free: 9, tasks: 6, tea: 2),
   (zone: 'BTM Border', free: 14, tasks: 2, tea: 8),
 ];
+
+final List<RadarZoneData> kSeedRadarZones = [
+  RadarZoneData(
+    zone: 'Jyoti Nivas Lane',
+    free: 18,
+    tasks: 5,
+    tea: 7,
+    spot: 'Jyoti Nivas College gate',
+  ),
+  RadarZoneData(
+    zone: '5th Block',
+    free: 11,
+    tasks: 3,
+    tea: 4,
+    spot: '5th Block park bench row',
+  ),
+  RadarZoneData(
+    zone: 'Madiwala Market',
+    free: 9,
+    tasks: 6,
+    tea: 2,
+    spot: 'Market main entrance',
+  ),
+  RadarZoneData(
+    zone: 'BTM Border',
+    free: 14,
+    tasks: 2,
+    tea: 8,
+    spot: 'BTM 16th main tea stall',
+  ),
+];
+

@@ -265,10 +265,10 @@ class _AuctionDetailScreenState extends ConsumerState<AuctionDetailScreen> {
               background: Stack(
                 fit: StackFit.expand,
                 children: [
-                  Image.network(
+                  NeedyImage(
                     auction.imageUrl,
                     fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Container(
+                    errorChild: Container(
                       color: const Color(0xFF1E293B),
                       child: const Icon(Icons.gavel_rounded, size: 60, color: Colors.white54),
                     ),

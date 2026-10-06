@@ -332,12 +332,12 @@ class _AuctionCard extends StatelessWidget {
                   ClipRRect(
                     borderRadius:
                         const BorderRadius.vertical(top: Radius.circular(20)),
-                    child: Image.network(
+                    child: NeedyImage(
                       auction.imageUrl,
                       height: 160,
                       width: double.infinity,
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => Container(
+                      errorChild: Container(
                         height: 160,
                         color: const Color(0xFF334155),
                         child: const Icon(Icons.gavel_rounded,

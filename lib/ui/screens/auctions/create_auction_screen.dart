@@ -1,6 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../core/theme/haptics.dart';
 import '../../../state/providers.dart';
@@ -23,6 +26,11 @@ class _CreateAuctionScreenState extends ConsumerState<CreateAuctionScreen> {
 
   String _selectedCategory = 'Home & Room';
   int _selectedDurationHours = 24;
+
+  Uint8List? _photoBytes;
+  String _photoName = 'photo.jpg';
+  String _photoMime = 'image/jpeg';
+  bool _publishing = false;
 
   final List<String> _categories = [
     'Time & Service',
@@ -92,6 +100,11 @@ class _CreateAuctionScreenState extends ConsumerState<CreateAuctionScreen> {
                 ],
               ),
             ),
+            const SizedBox(height: 24),
+
+            // Product Photo
+            _label('Product Photo'),
+            _photoSection(),
             const SizedBox(height: 24),
 
             // Item/Service Title
@@ -255,40 +268,7 @@ class _CreateAuctionScreenState extends ConsumerState<CreateAuctionScreen> {
                   elevation: 0,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                 ),
-                onPressed: () {
-                  final title = _titleController.text.trim();
-                  final desc = _descController.text.trim();
-                  final basePrice = double.tryParse(_basePriceController.text.trim()) ?? 100;
-                  final buyNow = double.tryParse(_buyNowPriceController.text.trim());
-
-                  if (title.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Please enter an auction title')),
-                    );
-                    return;
-                  }
-
-                  AppHaptics.heavy();
-                  ref.read(storeProvider).backend.createAuction(
-                        title: title,
-                        description: desc.isEmpty ? 'Verified auction listing.' : desc,
-                        category: _selectedCategory,
-                        imageUrl: '',
-                        basePrice: basePrice,
-                        buyItNowPrice: buyNow,
-                        durationHours: _selectedDurationHours,
-                        area: _areaController.text,
-                      );
-
-                  context.pop();
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Auction published and live!'),
-                      backgroundColor: Color(0xFF10B981),
-                    ),
-                  );
-                },
+                onPressed: _publishing ? null : _publish,
                 child: const Text(
                   'Publish Live Auction',
                   style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
@@ -296,6 +276,161 @@ class _CreateAuctionScreenState extends ConsumerState<CreateAuctionScreen> {
               ),
             ),
             const SizedBox(height: 24),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _publish() async {
+    final title = _titleController.text.trim();
+    final desc = _descController.text.trim();
+    final basePrice = double.tryParse(_basePriceController.text.trim()) ?? 100;
+    final buyNow = double.tryParse(_buyNowPriceController.text.trim());
+
+    if (title.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter an auction title')),
+      );
+      return;
+    }
+
+    setState(() => _publishing = true);
+
+    // Photo first, so a failed upload keeps the form open.
+    var imageUrl = '';
+    if (_photoBytes != null) {
+      try {
+        imageUrl = await ref.read(storeProvider).backend.uploadImage(
+              _photoBytes!,
+              filename: _photoName,
+              mimeType: _photoMime,
+            );
+      } catch (e) {
+        if (!mounted) return;
+        setState(() => _publishing = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Photo upload failed: $e'),
+            backgroundColor: const Color(0xFFEF4444),
+          ),
+        );
+        return;
+      }
+    }
+
+    AppHaptics.heavy();
+    ref.read(storeProvider).backend.createAuction(
+          title: title,
+          description: desc.isEmpty ? 'Verified auction listing.' : desc,
+          category: _selectedCategory,
+          imageUrl: imageUrl,
+          basePrice: basePrice,
+          buyItNowPrice: buyNow,
+          durationHours: _selectedDurationHours,
+          area: _areaController.text,
+        );
+
+    if (!mounted) return;
+    context.pop();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Auction published and live!'),
+        backgroundColor: Color(0xFF10B981),
+      ),
+    );
+  }
+
+  Future<void> _pickPhoto() async {
+    final x = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 1600,
+      imageQuality: 82,
+    );
+    if (x == null) return;
+    final bytes = await x.readAsBytes();
+    if (!mounted) return;
+    setState(() {
+      _photoBytes = bytes;
+      _photoName = x.name;
+      _photoMime = x.mimeType ??
+          (x.name.toLowerCase().endsWith('.png')
+              ? 'image/png'
+              : 'image/jpeg');
+    });
+  }
+
+  Widget _photoSection() {
+    return _photoBytes == null
+        ? GestureDetector(
+            onTap: _pickPhoto,
+            child: Container(
+              height: 140,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: const Color(0xFF1E293B),
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(
+                  color: Colors.white.withValues(alpha: 0.12),
+                ),
+              ),
+              child: const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.add_photo_alternate_rounded,
+                      color: Color(0xFF8B5CF6), size: 34),
+                  SizedBox(height: 8),
+                  Text(
+                    'Add a product photo — listings with photos bid faster',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white54, fontSize: 12),
+                  ),
+                ],
+              ),
+            ),
+          )
+        : Stack(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(14),
+                child: Image.memory(
+                  _photoBytes!,
+                  height: 190,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Positioned(
+                top: 8,
+                right: 8,
+                child: Row(
+                  children: [
+                    _photoChip(Icons.refresh_rounded, 'Change', _pickPhoto),
+                    const SizedBox(width: 6),
+                    _photoChip(Icons.close_rounded, 'Remove', () {
+                      setState(() => _photoBytes = null);
+                    }),
+                  ],
+                ),
+              ),
+            ],
+          );
+  }
+
+  Widget _photoChip(IconData icon, String label, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: Colors.black.withValues(alpha: 0.55),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, color: Colors.white, size: 14),
+            const SizedBox(width: 4),
+            Text(label, style: const TextStyle(color: Colors.white, fontSize: 11)),
           ],
         ),
       ),

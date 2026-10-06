@@ -121,7 +121,7 @@ class _RadarMapScreenState extends ConsumerState<RadarMapScreen> {
               TileLayer(
                 urlTemplate:
                     'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                userAgentPackageName: 'com.nuvra.app',
+                userAgentPackageName: 'com.needy.app',
               ),
               // Privacy-blurred density circles — one per zone.
               CircleLayer(

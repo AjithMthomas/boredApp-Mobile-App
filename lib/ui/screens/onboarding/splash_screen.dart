@@ -1,15 +1,13 @@
-// White modern splash: brand name front and center, clean and airy.
-// Pairs with the native white launch screen for a seamless cold start.
+// White modern splash: full-screen NEEDY Lottie loading animation.
+// Pairs with native launch screen for a seamless cold start.
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../../core/theme/app_colors.dart';
 
-/// Clean white splash. A tiny mint/sky aurora breath keeps it alive without
-/// clutter; the wordmark is the hero, exactly as a 5s-glance brand moment
-/// should be. 1.6s total, then hands off to auth.
+/// Full-screen initial loading splash screen powered by the NEEDY Lottie animation.
+/// Plays full-screen on cold start, then hands off to auth.
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -21,11 +19,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future<void>.delayed(const Duration(milliseconds: 1600), () {
+    Future<void>.delayed(const Duration(milliseconds: 2500), () {
       if (mounted) context.go('/auth/email');
     });
-    // Real session restore happens in the router redirect (signedIn flag);
-    // the splash is purely the brand moment.
+    // Session restore is handled by the router redirect;
+    // splash screen displays the full-screen NEEDY brand animation.
   }
 
   @override
@@ -34,134 +32,42 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          // Whisper-soft aurora washes — barely-there color on white.
+          // Soft ambient aurora background washes
           Positioned(
-            top: -140,
-            right: -110,
-            child: _wash(320, AppColors.auroraMint.withValues(alpha: 0.10)),
+            top: -120,
+            right: -100,
+            child: _wash(340, AppColors.auroraMint.withValues(alpha: 0.12)),
           ),
           Positioned(
-            bottom: -160,
-            left: -120,
-            child: _wash(360, AppColors.auroraSky.withValues(alpha: 0.09)),
+            bottom: -140,
+            left: -100,
+            child: _wash(380, AppColors.auroraSky.withValues(alpha: 0.10)),
           ),
 
+          // Full-screen centered NEEDY Lottie loading animation
           Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // ── Wordmark: the hero ──────────────────────────────
-                // "nuv" in ink + "ra" in brand blue — a single accent that
-                // makes the name memorable without extra decoration.
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: 'nuv',
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 52,
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.textPrimary,
-                          letterSpacing: -1.5,
-                        ),
-                      ),
-                      TextSpan(
-                        text: 'ra',
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 52,
-                          fontWeight: FontWeight.w800,
-                          foreground: Paint()
-                            ..shader = const LinearGradient(
-                              colors: [AppColors.auroraMint, AppColors.auroraSky],
-                            ).createShader(
-                              // "ra" is roughly 60px wide at this size.
-                              const Rect.fromLTWH(0, 0, 62, 70),
-                            ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-                    .animate(delay: 100.ms)
-                    .fadeIn(duration: 450.ms, curve: Curves.easeOut)
-                    .slideY(
-                      begin: 0.35,
-                      end: 0,
-                      duration: 550.ms,
-                      curve: Curves.easeOutCubic,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      maxWidth: 380,
+                      maxHeight: 380,
                     ),
-
-                const SizedBox(height: 10),
-
-                // ── Shimmer underline ────────────────────────────────
-                // A mint→sky bar sweeps in under the name, then keeps a
-                // gentle pulse — modern, minimal, alive.
-                Container(
-                  height: 4,
-                  width: 118,
-                  decoration: BoxDecoration(
-                    gradient: AppColors.aurora,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                )
-                    .animate(
-                      delay: 400.ms,
-                      onPlay: (c) => c.repeat(reverse: true),
-                    )
-                    .fadeIn(duration: 350.ms)
-                    .scaleX(
-                      begin: 0.15,
-                      end: 1,
-                      alignment: Alignment.center,
-                      duration: 600.ms,
-                      curve: Curves.easeOutCubic,
-                    )
-                    .then(delay: 200.ms)
-                    .scaleX(
-                      begin: 1,
-                      end: 0.82,
-                      duration: 1100.ms,
-                      curve: Curves.easeInOut,
-                    ),
-
-                const SizedBox(height: 18),
-
-                // ── Tagline ─────────────────────────────────────────
-                Text(
-                  'Time for needs. Needs for time.',
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 13.5,
-                    color: AppColors.textSecondary,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 0.2,
-                  ),
-                )
-                    .animate(delay: 650.ms)
-                    .fadeIn(duration: 450.ms)
-                    .slideY(begin: 0.25, end: 0, duration: 450.ms),
-
-                const SizedBox(height: 72),
-
-                // ── Loading indicator ───────────────────────────────
-                // Three brand-colored dots breathing in sequence instead of
-                // a plain spinner — lighter and more on-brand.
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(3, (i) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
-                      width: 7,
-                      height: 7,
-                      decoration: const BoxDecoration(
-                        color: AppColors.auroraSky,
-                        shape: BoxShape.circle,
+                    child: Lottie.asset(
+                      'assets/animations/needy_loading.json',
+                      fit: BoxFit.contain,
+                      errorBuilder: (_, __, ___) => Image.asset(
+                        'assets/animations/needy_loading.gif',
+                        width: 320,
+                        height: 320,
+                        fit: BoxFit.contain,
                       ),
-                    )
-                        .animate(onPlay: (c) => c.repeat(reverse: true))
-                        .fadeOut(delay: (i * 160).ms, duration: 420.ms);
-                  }),
-                ).animate(delay: 800.ms).fadeIn(duration: 300.ms),
-              ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

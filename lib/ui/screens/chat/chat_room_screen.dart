@@ -6,8 +6,9 @@ import 'package:intl/intl.dart';
 import '../../../core/models/models.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_dimens.dart';
+import '../../../data/backend_contract.dart';
 import '../../../data/mock_backend.dart'
-    show MockApplication, MockMessage, MockBackend;
+    show MockApplication, MockMessage;
 import '../../../state/providers.dart';
 import '../../widgets/common.dart';
 
@@ -31,7 +32,7 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
     super.dispose();
   }
 
-  void _send(MockBackend b, MockApplication app) {
+  void _send(BackendContract b, MockApplication app) {
     final text = _inputCtrl.text.trim();
     if (text.isEmpty) return;
     b.sendMessage(app.id, text);
@@ -48,7 +49,7 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
     });
   }
 
-  void _selectApplicant(MockBackend b, MockApplication app, Task task) {
+  void _selectApplicant(BackendContract b, MockApplication app, Task task) {
     showDialog<void>(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -356,7 +357,7 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
   }
 
   void _showSafetyActions(
-      BuildContext context, MockBackend b, MockApplication app) {
+      BuildContext context, BackendContract b, MockApplication app) {
     showModalBottomSheet<void>(
       context: context,
       builder: (ctx) => SafeArea(

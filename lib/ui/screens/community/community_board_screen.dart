@@ -95,7 +95,7 @@ class _CommunityBoardScreenState extends ConsumerState<CommunityBoardScreen> {
                     Icon(Icons.forum_rounded, color: Colors.white, size: 26),
                     SizedBox(width: 10),
                     Text(
-                      'What should nuvra do next?',
+                      'What should needy do next?',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w900,

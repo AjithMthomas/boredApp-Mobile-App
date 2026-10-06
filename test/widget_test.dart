@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:time_need/core/models/models.dart';
-import 'package:time_need/data/mock_backend.dart';
+import 'package:needy/core/models/models.dart';
+import 'package:needy/data/mock_backend.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

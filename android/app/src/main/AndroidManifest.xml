@@ -1,7 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- needy backend access (Stage 2). Cleartext is enabled so the app can
+         talk to a LAN dev server (e.g. 192.168.x.x:8000) during development;
+         production builds should target HTTPS-only API URLs. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="nuvra"
+        android:label="needy"
         android:name="${applicationName}"
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

@@ -1,11 +1,11 @@
 {
-    "name": "nuvra",
-    "short_name": "nuvra",
+    "name": "needy",
+    "short_name": "needy",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "needy — hyperlocal micro-marketplace.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../core/models/models.dart';
 import '../../core/theme/app_colors.dart';
@@ -12,6 +15,90 @@ import 'gradient_button.dart';
 export 'glass_card.dart';
 export 'gradient_avatar.dart';
 export 'gradient_button.dart';
+
+/// Reusable NEEDY loading animation widget powered by Lottie.
+class NeedyLoadingIndicator extends StatelessWidget {
+  const NeedyLoadingIndicator({
+    super.key,
+    this.size = 220,
+    this.fit = BoxFit.contain,
+  });
+
+  final double size;
+  final BoxFit fit;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: size,
+      height: size,
+      child: Lottie.asset(
+        'assets/animations/needy_loading.json',
+        fit: fit,
+        errorBuilder: (_, __, ___) => Image.asset(
+          'assets/animations/needy_loading.gif',
+          width: size,
+          height: size,
+          fit: fit,
+        ),
+      ),
+    );
+  }
+}
+
+/// Image that also renders inline data: URLs (demo-mode photo uploads);
+/// falls back to [errorChild] on any failure, network or decode.
+class NeedyImage extends StatelessWidget {
+  const NeedyImage(
+    this.url, {
+    super.key,
+    this.fit,
+    this.width,
+    this.height,
+    this.errorChild,
+  });
+
+  final String url;
+  final BoxFit? fit;
+  final double? width;
+  final double? height;
+  final Widget? errorChild;
+
+  @override
+  Widget build(BuildContext context) {
+    if (url.startsWith('data:image/')) {
+      try {
+        return Image.memory(
+          base64Decode(url.substring(url.indexOf(',') + 1)),
+          fit: fit,
+          width: width,
+          height: height,
+          errorBuilder: (_, __, ___) => _fallback(),
+        );
+      } catch (_) {
+        return _fallback();
+      }
+    }
+    return Image.network(
+      url,
+      fit: fit,
+      width: width,
+      height: height,
+      errorBuilder: (_, __, ___) => _fallback(),
+    );
+  }
+
+  Widget _fallback() =>
+      errorChild ??
+      Container(
+        width: width,
+        height: height,
+        color: const Color(0xFF1E293B),
+        child: const Icon(Icons.gavel_rounded, size: 40, color: Colors.white54),
+      );
+}
+
+typedef NuvraImage = NeedyImage;
 
 /// The ONE back button used on every screen of the app.
 ///
